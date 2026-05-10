@@ -1,0 +1,27 @@
+{
+  "id": "m5",
+  "order": 5,
+  "title": "Contigo — Edit Pack",
+  "genre": "PERREO EDITS",
+  "bpm": 98,
+  "key": "9A",
+  "length": "45:50",
+  "plays": "11.3K",
+  "color": "#ff3bd4",
+  "cues": [0.12, 0.38, 0.6, 0.84],
+  "seed": 83,
+  "date": "2025-10-22",
+  "venue": "Studio",
+  "blurb": "Nine unreleased Nasha edits. Club-tested, floor-approved. Download includes stems for DJs only.",
+  "tracklist": [
+    "RAUW ALEJANDRO — Todo de Ti (Nasha Perreo Edit)",
+    "ROSALÍA — DESPECHÁ (Club VIP)",
+    "KAROL G — Bichota (Nasha Rework)",
+    "BAD BUNNY — Me Porto Bonito (Perreo Cut)",
+    "SHAKIRA — TQG (Nasha Edit)",
+    "QUEVEDO — Bzrp #52 (Club Mix)",
+    "TAINY — Lo Siento BB :/ (VIP)",
+    "FEID — Normal (Nasha Edit)",
+    "MYKE TOWERS — LALA (Dembow Cut)"
+  ]
+}

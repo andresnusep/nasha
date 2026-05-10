@@ -1,0 +1,25 @@
+{
+  "id": "m4",
+  "order": 4,
+  "title": "Dembow Dispatch",
+  "genre": "DEMBOW",
+  "bpm": 108,
+  "key": "6A",
+  "length": "41:20",
+  "plays": "5.8K",
+  "color": "#ffcc00",
+  "cues": [0.18, 0.42, 0.7],
+  "seed": 67,
+  "date": "2025-11-05",
+  "venue": "Home",
+  "blurb": "41 minutes of Santo Domingo street energy. New + classic dembow cuts, no fillers.",
+  "tracklist": [
+    "EL ALFA — Suave",
+    "TOKISCHA — Somos Iguales",
+    "YAILIN — Nene",
+    "FEFITA LA GRANDE — Vamo' a Gozar",
+    "ROCHY RD — Te Vi Con Él",
+    "BULIN 47 — Se Acabó",
+    "LAPIZ CONSCIENTE — Pa'l de Abajo"
+  ]
+}

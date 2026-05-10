@@ -1,0 +1,7 @@
+name = "nasha-oauth"
+main = "src/index.js"
+compatibility_date = "2025-01-01"
+
+# Set these as secrets via `wrangler secret put`:
+#   wrangler secret put GITHUB_CLIENT_ID
+#   wrangler secret put GITHUB_CLIENT_SECRET

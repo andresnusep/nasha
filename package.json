@@ -1,0 +1,22 @@
+{
+  "name": "nasha-portfolio",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "cms": "concurrently -n cms,vite -c yellow,cyan \"decap-server\" \"vite\""
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.1.2",
+    "decap-server": "^3.1.4",
+    "vite": "^5.4.11"
+  }
+}

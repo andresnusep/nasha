@@ -1,0 +1,27 @@
+{
+  "id": "m3",
+  "order": 3,
+  "title": "Late Night Baile",
+  "genre": "LATIN CLUB",
+  "bpm": 100,
+  "key": "8B",
+  "length": "64:03",
+  "plays": "22.5K",
+  "color": "#a87bff",
+  "cues": [0.1, 0.28, 0.48, 0.68, 0.88],
+  "seed": 41,
+  "date": "2025-12-18",
+  "venue": "Shelter AMS",
+  "blurb": "The 5am closing set. For when the lights are still off and nobody wants to leave.",
+  "tracklist": [
+    "ARCA — KLK (Nasha Rework)",
+    "TOKISCHA — Popola",
+    "ROSALÍA — CHICKEN TERIYAKI",
+    "BAD GYAL — Hookah",
+    "LA GOONY CHONGA — Kikitaka",
+    "BAD BUNNY — Safaera",
+    "MS NINA — Tu Sicaria",
+    "BRISA FENOY — Tu Cancion",
+    "NATHY PELUSO — Business Woman"
+  ]
+}
