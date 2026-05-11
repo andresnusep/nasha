@@ -57,25 +57,54 @@ export default {
         ? { token: data.access_token, provider: 'github' }
         : { error: data.error || 'token_exchange_failed' };
 
-      // Decap listens for `authorization:github:success:{json}` from a popup.
-      // We post to all allowlisted origins; the wrong-origin posts silently no-op.
-      const message = data.access_token
-        ? `authorization:github:success:${JSON.stringify(payload)}`
-        : `authorization:github:error:${JSON.stringify(payload)}`;
+      // Decap's external-auth handshake (matches Netlify's reference proxy):
+      //   popup → opener:  "authorizing:github"
+      //   opener → popup:  "authorizing:github"   (confirm)
+      //   popup → opener:  "authorization:github:success:{json}"
+      //   popup closes
+      // Posting the success message before the handshake silently no-ops in
+      // Decap, which is why the previous version logged "Login complete" but
+      // the admin window never received the token.
+      const status = data.access_token ? 'success' : 'error';
+      const finalMessage = `authorization:github:${status}:${JSON.stringify(payload)}`;
+      const handshake = 'authorizing:github';
 
       const html = `<!doctype html>
-<html><body><script>
+<html><body>
+<p id="status">Completing login…</p>
+<script>
 (function () {
-  const allow = ${JSON.stringify(ORIGIN_ALLOWLIST)};
-  const send = () => allow.forEach(o => {
-    try { window.opener && window.opener.postMessage(${JSON.stringify(message)}, o); } catch (e) {}
-  });
-  // Decap pings us first to confirm origin; reply when asked, then send.
-  window.addEventListener('message', send, false);
-  send();
-  document.body.textContent = ${data.access_token ? "'Login complete — you can close this tab.'" : "'Login failed: ' + ${JSON.stringify(payload.error || '')}"};
+  var allow = ${JSON.stringify(ORIGIN_ALLOWLIST)};
+  function send(msg) {
+    allow.forEach(function (o) {
+      try { if (window.opener) window.opener.postMessage(msg, o); } catch (e) {}
+    });
+  }
+
+  // 1. Tell the opener we're authorizing (handshake).
+  send(${JSON.stringify(handshake)});
+
+  // 2. Wait for the opener's confirmation, then reply with the token.
+  function onMsg(e) {
+    if (e.data !== ${JSON.stringify(handshake)}) return;
+    window.removeEventListener('message', onMsg);
+    send(${JSON.stringify(finalMessage)});
+    document.getElementById('status').textContent = 'Login complete — closing this tab…';
+    setTimeout(function () {
+      try { window.close(); } catch (e) {}
+    }, 300);
+  }
+  window.addEventListener('message', onMsg, false);
+
+  // Failsafe: if no confirmation arrives within 5s (e.g. popup blocker
+  // chewed the parent listener), still close so the user isn't stranded.
+  setTimeout(function () {
+    document.getElementById('status').textContent =
+      'No response from opener. You can close this tab.';
+  }, 5000);
 }());
-</script></body></html>`;
+</script>
+</body></html>`;
 
       return new Response(html, { headers: { 'Content-Type': 'text/html' } });
     }
