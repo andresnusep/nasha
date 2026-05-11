@@ -122,6 +122,11 @@ collections:
       - { name: date, label: Date, widget: date, format: 'YYYY-MM-DD' }
       - { name: venue, label: Recorded at, widget: string }
       - { name: blurb, label: Blurb, widget: text }
+      - name: embedUrl
+        label: Audio embed URL
+        widget: string
+        required: false
+        hint: 'Mixcloud or SoundCloud embed src. On Mixcloud: Share → Embed → copy the src="…" URL only. On SoundCloud: Share → Embed → copy src="…". Leave empty for no player.'
       - name: tracklist
         label: Tracklist
         widget: list

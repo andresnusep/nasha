@@ -73,8 +73,23 @@ export function MixDetail({ mix, onClose, onPlay, accent }) {
             <Stat k="PLAYS" v={mix.plays} />
             <Stat k="DATE" v={mix.date} />
           </div>
-          <Waveform progress={0.36} color={mix.color} cues={mix.cues} seed={mix.seed}
-            height={46} bars={120} unplayedColor="var(--fg-faint)" />
+          {mix.embedUrl ? (
+            // Iframe height varies by platform — Mixcloud wants ~120, SoundCloud
+            // 166, YouTube 200ish. 180 is a decent middle ground; the iframes
+            // themselves let users scroll within.
+            <iframe
+              title={`${mix.title} — audio player`}
+              src={mix.embedUrl}
+              width="100%"
+              height="180"
+              frameBorder="0"
+              allow="autoplay; encrypted-media"
+              style={{ display: 'block', borderRadius: 6, background: 'var(--surface-2)' }}
+            />
+          ) : (
+            <Waveform progress={0.36} color={mix.color} cues={mix.cues} seed={mix.seed}
+              height={46} bars={120} unplayedColor="var(--fg-faint)" />
+          )}
         </div>
 
         <div style={{ padding: '16px 28px', display: 'flex', gap: 8, flexWrap: 'wrap', borderBottom: '1px solid var(--border)' }}>
