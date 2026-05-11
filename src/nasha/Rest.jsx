@@ -778,8 +778,7 @@ function FooterA({ D, accent }) {
         </div>
         <div style={{ fontSize: 11, color: 'var(--fg-dim)', letterSpacing: '0.1em', lineHeight: 1.7 }}>
           © 2026 NASHA · AMSTERDAM · SANTIAGO<br />
-          BOOKING: {D.links.email}<br />
-          SITE BUILT FROM A CLAUDE DESIGN.
+          BOOKING: {D.links.email}
         </div>
       </div>
     </div>
