@@ -1,12 +1,12 @@
 {
-  "date": "JAN 11",
-  "day": 11,
-  "month": 0,
-  "year": 2026,
-  "dow": "SAT",
-  "venue": "Lofi",
+  "month": 4,
   "city": "Amsterdam, NL",
-  "status": "PLAYED",
-  "kind": "Opening",
-  "time": "23:00 – 01:00"
+  "dow": "SAT",
+  "time": "18:00 – 01:00",
+  "date": "MAY 23",
+  "venue": "Het Sieraad",
+  "status": "UPCOMING",
+  "kind": "Full Show",
+  "day": 23,
+  "year": 2026
 }
