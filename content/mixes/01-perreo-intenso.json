@@ -1,20 +1,16 @@
 {
-  "id": "m1",
-  "order": 1,
-  "title": "Perreo Intenso Vol. 04",
+  "cues": [
+    0.08,
+    0.22,
+    0.41,
+    0.63,
+    0.81
+  ],
   "genre": "REGGAETÓN",
-  "bpm": 96,
-  "key": "7A",
-  "length": "58:12",
-  "plays": "14.2K",
   "color": "#c2ff00",
-  "cues": [0.08, 0.22, 0.41, 0.63, 0.81],
-  "seed": 11,
-  "date": "2026-03-12",
-  "venue": "Live at BounceSpace",
-  "blurb": "Recorded live at BounceSpace residency, March 2026. Pure perreo — no breaks, no mercy. Starts hard, ends harder.",
+  "length": "58:12",
   "tracklist": [
-    "DADDY YANKEE — Gasolina (Nasha Edit)",
+    "DADDY YANKEE — Lo que paso, paso (Nasha Edit)",
     "IVY QUEEN — Yo Quiero Bailar (Perreo VIP)",
     "TEGO CALDERÓN — Pa' Que Retozen",
     "WISIN & YANDEL — Rakata (Club Mix)",
@@ -26,5 +22,15 @@
     "KAROL G — Provenza (Edit)",
     "RAUW ALEJANDRO — Todo de Ti",
     "J BALVIN — Mi Gente (Reggaetón VIP)"
-  ]
+  ],
+  "order": 1,
+  "date": "2026-03-12",
+  "venue": "Live at BounceSpace",
+  "seed": 11,
+  "title": "Perreo Intenso Vol. 04",
+  "blurb": "Recorded live at BounceSpace residency, March 2026. Pure perreo — no breaks, no mercy. Starts hard, ends harder.",
+  "id": "m1",
+  "bpm": 96,
+  "key": "7A",
+  "plays": "14.2K"
 }
