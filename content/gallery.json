@@ -1,10 +1,34 @@
 {
   "items": [
-    { "label": "BOUNCESPACE · APR 12", "tone": "#ff4d1a", "image": "" },
-    { "label": "SHELTER · MAR 29", "tone": "#c2ff00", "image": "" },
-    { "label": "STUDIO · MAR 10", "tone": "#a87bff", "image": "" },
-    { "label": "LOFI · FEB 22", "tone": "#ffcc00", "image": "" },
-    { "label": "GARAGE NOORD · FEB 08", "tone": "#ff3bd4", "image": "" },
-    { "label": "PORTRAIT · JAN 18", "tone": "#e34a2b", "image": "" }
+    {
+      "label": "BOUNCESPACE · APR 12",
+      "tone": "#ff4d1a",
+      "image": "https://www.instagram.com/p/DVOA-58Ddbn/?img_index=1"
+    },
+    {
+      "label": "SHELTER · MAR 29",
+      "tone": "#c2ff00",
+      "image": ""
+    },
+    {
+      "label": "STUDIO · MAR 10",
+      "tone": "#a87bff",
+      "image": ""
+    },
+    {
+      "label": "LOFI · FEB 22",
+      "tone": "#ffcc00",
+      "image": ""
+    },
+    {
+      "label": "GARAGE NOORD · FEB 08",
+      "tone": "#ff3bd4",
+      "image": ""
+    },
+    {
+      "label": "PORTRAIT · JAN 18",
+      "tone": "#e34a2b",
+      "image": ""
+    }
   ]
 }
