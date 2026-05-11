@@ -123,13 +123,13 @@ function NavA({ section, setSection, accent, theme = 'dark', setTheme }) {
       zIndex: 20,
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-        <div style={{
+        <div className="nav-bar-logo-dot" style={{
           width: 28, height: 28, borderRadius: '50%',
           background: accent, display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontFamily: 'var(--mono)', fontSize: 12, fontWeight: 700, color: '#000',
         }}>●</div>
-        <span style={{ fontSize: 16, fontWeight: 800, letterSpacing: '0.1em' }}>NASHA/FM</span>
-        <span style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--fg-faint)', letterSpacing: '0.15em', marginLeft: 6 }}>● LIVE</span>
+        <span className="nav-bar-logo" style={{ fontSize: 16, fontWeight: 800, letterSpacing: '0.1em' }}>NASHA/FM</span>
+        <span className="nav-bar-live" style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--fg-faint)', letterSpacing: '0.15em', marginLeft: 6 }}>● LIVE</span>
       </div>
       <nav style={{ display: 'flex', gap: 4 }}>
         {items.map((it) => (
