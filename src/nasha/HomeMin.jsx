@@ -34,7 +34,7 @@ export function HomeAMin({ D, setSection, accent = '#c2ff00', gap = 12 }) {
           </div>
         </div>
 
-        <div style={{
+        <div className="hero-min-word" style={{
           fontSize: 'clamp(96px, 17vw, 280px)',
           fontWeight: fontWeight,
           lineHeight: 0.82,

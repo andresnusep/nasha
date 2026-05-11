@@ -50,3 +50,83 @@ input,
 textarea {
   font-family: inherit;
 }
+
+/* ───────────────────────────────────────────────────────────────────────
+   Mobile pass
+   The bento layout assumes ≥1024px. Below ~720px every card collapses
+   to a full-row stack, and a handful of inner grids (mixer, mixes
+   table, About-page sub-grids) get targeted overrides. Inline styles
+   on bento cards win over CSS by default, so we use !important here.
+   ─────────────────────────────────────────────────────────────────── */
+@media (max-width: 720px) {
+  /* 12-col bento → 1-col stack. Every card spans the full row. */
+  .bento-card {
+    grid-column: span 12 !important;
+    min-height: 0 !important;
+  }
+
+  /* Inner grids on the About page (stats/quotes/gallery) — flatten. */
+  .stats-grid,
+  .press-quotes-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .gallery-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+
+  /* Nav: trim padding, hide IG/SC label cluster, tighten button gap. */
+  .nav-bar {
+    padding: 10px 12px !important;
+    gap: 8px;
+  }
+  .nav-bar-social {
+    display: none !important;
+  }
+  .nav-bar nav {
+    gap: 2px !important;
+  }
+  .nav-bar nav button {
+    padding: 6px 9px !important;
+    font-size: 11px !important;
+    letter-spacing: 0.08em !important;
+  }
+
+  /* Mixer block (HomeFull): let the knob/fader/VU cluster wrap. */
+  .mixer-row {
+    flex-wrap: wrap !important;
+    justify-content: flex-start !important;
+    gap: 18px !important;
+  }
+
+  /* Mixes table: too many columns for a phone. Horizontal-scroll
+     inside the card so all info stays accessible via swipe. */
+  .mixes-table {
+    overflow-x: auto !important;
+  }
+  .mixes-table > div {
+    min-width: 640px;
+  }
+
+  /* Full schedule list (Gigs page): same horizontal-scroll trick. */
+  .gigs-schedule > div:not(:first-child) {
+    min-width: 560px;
+  }
+  .gigs-schedule {
+    overflow-x: auto !important;
+  }
+
+  /* About fact sheet + rider — fit the narrow column. */
+  .fact-sheet > div {
+    grid-template-columns: 90px 1fr !important;
+  }
+
+  /* Booking page: stack the purple promo and the form. */
+  /* Already handled by .bento-card span-12 above. */
+}
+
+/* Very narrow phones — push the wordmark down one more notch. */
+@media (max-width: 380px) {
+  .hero-min-word {
+    font-size: clamp(56px, 22vw, 120px) !important;
+  }
+}

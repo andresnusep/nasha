@@ -99,7 +99,7 @@ export function HomeA({ D, currentMix, progress, isPlaying, setIsPlaying, timeDi
             <div style={{ fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: '0.15em', color: 'var(--fg-dim)' }}>◉ MIXER / EQ</div>
             <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--fg-faint)' }}>DRAG TO TWEAK</div>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'flex-end', gap: 14, padding: '4px 0 0' }}>
+          <div className="mixer-row" style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'flex-end', gap: 14, padding: '4px 0 0' }}>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
               <div style={{ display: 'flex', gap: 10 }}>
                 <Knob value={knobs.high} onChange={(v) => setKnobs({ ...knobs, high: v })} label="HI" color={accent} size={36} />

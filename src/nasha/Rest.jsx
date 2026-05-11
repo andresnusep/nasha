@@ -116,7 +116,7 @@ function NavA({ section, setSection, accent, theme = 'dark', setTheme }) {
     { id: 'booking', label: 'BOOK' },
   ];
   return (
-    <div style={{
+    <div className="nav-bar" style={{
       display: 'flex', alignItems: 'center', justifyContent: 'space-between',
       padding: '14px 20px', borderBottom: '1px solid var(--border)',
       position: 'sticky', top: 0, background: 'color-mix(in oklab, var(--bg) 90%, transparent)', backdropFilter: 'blur(12px)',
@@ -143,7 +143,7 @@ function NavA({ section, setSection, accent, theme = 'dark', setTheme }) {
         ))}
       </nav>
       <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-        <div style={{ display: 'flex', gap: 8, fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: '0.12em', color: 'var(--fg-dim)' }}>
+        <div className="nav-bar-social" style={{ display: 'flex', gap: 8, fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: '0.12em', color: 'var(--fg-dim)' }}>
           <span>IG</span><span>·</span><span>SC</span>
         </div>
         <button onClick={() => setTheme && setTheme(theme === 'dark' ? 'light' : 'dark')}
@@ -194,7 +194,7 @@ function MixesA({ D, playingIdx, setPlayingIdx, progress, isPlaying, setIsPlayin
           </div>
         </div>
 
-        <div className="bento-card" style={{
+        <div className="bento-card mixes-table" style={{
           gridColumn: 'span 12', background: 'var(--surface-2)', border: '1px solid var(--border-soft)',
           padding: 0, overflow: 'hidden',
         }}>
@@ -429,7 +429,7 @@ function GigsA({ D, accent }) {
           )}
         </div>
 
-        <div className="bento-card" style={{
+        <div className="bento-card gigs-schedule" style={{
           gridColumn: 'span 12', background: 'var(--bg)', padding: 0,
           border: '1px solid var(--border-soft)',
         }}>
@@ -545,7 +545,7 @@ function AboutA({ D, accent }) {
           <div style={{ fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: '0.18em', color: 'var(--fg-dim)' }}>
             ◉ FACT SHEET
           </div>
-          <div style={{ marginTop: 14, display: 'flex', flexDirection: 'column', gap: 1 }}>
+          <div className="fact-sheet" style={{ marginTop: 14, display: 'flex', flexDirection: 'column', gap: 1 }}>
             {D.press.specs.map((s, i) => (
               <div key={i} style={{
                 display: 'grid', gridTemplateColumns: '110px 1fr', gap: 10,
@@ -579,7 +579,7 @@ function AboutA({ D, accent }) {
           </div>
         </div>
 
-        <div style={{ gridColumn: 'span 12', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
+        <div className="press-quotes-grid" style={{ gridColumn: 'span 12', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
           {D.press.quotes.map((q, i) => (
             <div key={i} className="bento-card" style={{
               background: i === 0 ? accent : (i === 1 ? 'var(--surface)' : '#a87bff'),
@@ -599,7 +599,7 @@ function AboutA({ D, accent }) {
           ))}
         </div>
 
-        <div style={{ gridColumn: 'span 12', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
+        <div className="stats-grid" style={{ gridColumn: 'span 12', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
           {[
             { k: '24', l: 'MIXES RELEASED', sub: 'Since Jan 2023' },
             { k: '62.9K', l: 'LIFETIME PLAYS', sub: 'Across platforms' },
@@ -627,7 +627,7 @@ function AboutA({ D, accent }) {
             <span>◉ PRESS PHOTOS</span>
             <span>HI-RES · CLICK TO DOWNLOAD</span>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 4, padding: 4 }}>
+          <div className="gallery-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 4, padding: 4 }}>
             {D.gallery.map((p, i) => (
               <div key={i} style={{
                 aspectRatio: '1/1', background: p.tone, position: 'relative',
