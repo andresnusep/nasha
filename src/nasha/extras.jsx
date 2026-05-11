@@ -1,6 +1,50 @@
 import React from 'react';
 import { Waveform } from './widgets.jsx';
 
+// Turn a public share URL into something that can actually be iframed.
+// SoundCloud / Mixcloud / YouTube / Spotify all block their main domains
+// from being embedded (X-Frame-Options), and expose a separate /embed
+// or /widget/iframe URL for that. If the editor already pasted the
+// embed URL, pass through. If they pasted the share URL, convert.
+function normalizeEmbedUrl(input) {
+  if (!input) return null;
+  const url = input.trim();
+
+  // Already a player/embed URL — pass through.
+  if (
+    url.startsWith('https://w.soundcloud.com/player/') ||
+    url.startsWith('https://www.mixcloud.com/widget/iframe/') ||
+    url.startsWith('https://www.youtube.com/embed/') ||
+    url.includes('open.spotify.com/embed/')
+  ) {
+    return url;
+  }
+
+  // SoundCloud share → player.
+  if (/^https?:\/\/soundcloud\.com\//.test(url)) {
+    return `https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&color=%23000000&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false`;
+  }
+
+  // Mixcloud share → widget.
+  if (/^https?:\/\/(www\.)?mixcloud\.com\//.test(url)) {
+    const path = url.replace(/^https?:\/\/(www\.)?mixcloud\.com/, '');
+    return `https://www.mixcloud.com/widget/iframe/?hide_cover=1&feed=${encodeURIComponent(path)}`;
+  }
+
+  // YouTube watch / short → embed.
+  const ytWatch = url.match(/[?&]v=([\w-]+)/);
+  const ytShort = url.match(/youtu\.be\/([\w-]+)/);
+  const ytId = ytWatch?.[1] || ytShort?.[1];
+  if (ytId) return `https://www.youtube.com/embed/${ytId}`;
+
+  // Spotify share → embed.
+  const sp = url.match(/open\.spotify\.com\/(track|episode|album|playlist)\/([\w]+)/);
+  if (sp) return `https://open.spotify.com/embed/${sp[1]}/${sp[2]}`;
+
+  // Unknown — let the iframe try; user will see the platform's error.
+  return url;
+}
+
 export function MixDetail({ mix, onClose, onPlay, accent }) {
   React.useEffect(() => {
     const onKey = (e) => { if (e.key === 'Escape') onClose(); };
@@ -73,23 +117,26 @@ export function MixDetail({ mix, onClose, onPlay, accent }) {
             <Stat k="PLAYS" v={mix.plays} />
             <Stat k="DATE" v={mix.date} />
           </div>
-          {mix.embedUrl ? (
-            // Iframe height varies by platform — Mixcloud wants ~120, SoundCloud
-            // 166, YouTube 200ish. 180 is a decent middle ground; the iframes
-            // themselves let users scroll within.
-            <iframe
-              title={`${mix.title} — audio player`}
-              src={mix.embedUrl}
-              width="100%"
-              height="180"
-              frameBorder="0"
-              allow="autoplay; encrypted-media"
-              style={{ display: 'block', borderRadius: 6, background: 'var(--surface-2)' }}
-            />
-          ) : (
-            <Waveform progress={0.36} color={mix.color} cues={mix.cues} seed={mix.seed}
-              height={46} bars={120} unplayedColor="var(--fg-faint)" />
-          )}
+          {(() => {
+            const embed = normalizeEmbedUrl(mix.embedUrl);
+            if (!embed) {
+              return (
+                <Waveform progress={0.36} color={mix.color} cues={mix.cues} seed={mix.seed}
+                  height={46} bars={120} unplayedColor="var(--fg-faint)" />
+              );
+            }
+            return (
+              <iframe
+                title={`${mix.title} — audio player`}
+                src={embed}
+                width="100%"
+                height="180"
+                frameBorder="0"
+                allow="autoplay; encrypted-media"
+                style={{ display: 'block', borderRadius: 6, background: 'var(--surface-2)' }}
+              />
+            );
+          })()}
         </div>
 
         <div style={{ padding: '16px 28px', display: 'flex', gap: 8, flexWrap: 'wrap', borderBottom: '1px solid var(--border)' }}>

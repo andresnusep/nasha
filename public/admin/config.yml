@@ -126,7 +126,7 @@ collections:
         label: Audio embed URL
         widget: string
         required: false
-        hint: 'Mixcloud or SoundCloud embed src. On Mixcloud: Share → Embed → copy the src="…" URL only. On SoundCloud: Share → Embed → copy src="…". Leave empty for no player.'
+        hint: 'Paste the regular share URL — e.g. https://soundcloud.com/nashabiggi/your-mix, https://www.mixcloud.com/nashabiggi/your-mix/, a YouTube link, or a Spotify link. The site auto-converts it into the right embed player. Leave empty to fall back to the decorative waveform.'
       - name: tracklist
         label: Tracklist
         widget: list
