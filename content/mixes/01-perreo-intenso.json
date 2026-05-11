@@ -1,14 +1,8 @@
 {
-  "cues": [
-    0.08,
-    0.22,
-    0.41,
-    0.63,
-    0.81
-  ],
+  "cues": [],
   "genre": "REGGAETÓN",
   "color": "#c2ff00",
-  "length": "58:12",
+  "length": "20:31",
   "tracklist": [
     "DADDY YANKEE — Lo que paso, paso (Nasha Edit)",
     "IVY QUEEN — Yo Quiero Bailar (Perreo VIP)",
@@ -25,12 +19,13 @@
   ],
   "order": 1,
   "date": "2026-03-12",
-  "venue": "Live at BounceSpace",
+  "venue": "Live at Latin Depto",
   "seed": 11,
-  "title": "Perreo Intenso Vol. 04",
-  "blurb": "Recorded live at BounceSpace residency, March 2026. Pure perreo — no breaks, no mercy. Starts hard, ends harder.",
+  "embedUrl": "https://soundcloud.com/dj_nasha/mad-cool-dj-talent?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing",
+  "title": "Reggeaton New Classics & Throwbacks",
+  "blurb": "Recorded live at Latin Depto, March 2026. Pure perreo — no breaks, no mercy. Starts hard, ends harder.",
   "id": "m1",
   "bpm": 96,
   "key": "7A",
-  "plays": "14.2K"
+  "plays": "122"
 }
