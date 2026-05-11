@@ -18,8 +18,7 @@
 const ORIGIN_ALLOWLIST = [
   // Add the deployed site origin(s) the /admin page will load from.
   // Wildcard not supported — list each explicitly.
-  'https://nasha.fm',
-  'https://nasha.pages.dev',
+  'https://nasha.andresnusep.workers.dev',
   'http://localhost:5173',
 ];
 

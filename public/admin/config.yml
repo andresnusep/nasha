@@ -1,26 +1,28 @@
 # Decap CMS configuration.
 #
-# Two backends below — uncomment ONE depending on environment:
-#  • local_backend (default) — for `npm run cms` on your laptop. Edits hit the
-#    local filesystem via decap-server. No auth, no internet needed.
-#  • github backend — for the deployed /admin on Cloudflare Pages. Auth runs
-#    through a Cloudflare Worker (see cf-oauth-worker/). Replace REPO and
-#    BASE_URL placeholders before deploying.
+# Two backends below:
+#  • local_backend — for `npm run cms` on your laptop. Edits hit the local
+#    filesystem via decap-server. No auth, no internet needed. Decap honours
+#    this only when `local_backend: true` AND the page is served from
+#    localhost — so we can leave it on permanently. Production /admin
+#    ignores it.
+#  • github backend — used by the deployed /admin. Auth runs through the
+#    Cloudflare Worker in cf-oauth-worker/.
 
 local_backend: true
 
 backend:
   name: github
-  repo: YOUR-GITHUB-USER/nasha-portfolio   # ← change after pushing to GitHub
+  repo: andresnusep/nasha
   branch: main
-  base_url: https://nasha-oauth.YOUR-WORKER-SUBDOMAIN.workers.dev   # ← change after deploying the worker
+  base_url: https://nasha-oauth.andresnusep.workers.dev
   auth_endpoint: auth
 
 media_folder: public/uploads
 public_folder: /uploads
 
-site_url: https://nasha.fm
-display_url: https://nasha.fm
+site_url: https://nasha.andresnusep.workers.dev
+display_url: https://nasha.andresnusep.workers.dev
 
 collections:
   - name: site
