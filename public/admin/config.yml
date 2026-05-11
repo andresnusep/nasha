@@ -21,8 +21,8 @@ backend:
 media_folder: public/uploads
 public_folder: /uploads
 
-site_url: https://nasha.andresnusep.workers.dev
-display_url: https://nasha.andresnusep.workers.dev
+site_url: https://nashabiggi.com
+display_url: https://nashabiggi.com
 
 collections:
   - name: site
