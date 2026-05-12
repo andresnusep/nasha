@@ -110,10 +110,10 @@ export function HomeAMin({ D, setSection, accent = '#c2ff00', gap = 12 }) {
         <div style={{
           fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--fg-dim)', marginTop: 6, letterSpacing: '0.12em',
         }}>
-          {D.mixes[0].genre} · {D.mixes[0].bpm} BPM · {D.mixes[0].length}
+          {D.mixes[0].genre} · {D.mixes[0].length}
         </div>
         <div style={{ marginTop: 18 }}>
-          <Waveform progress={0} color={D.mixes[0].color} cues={D.mixes[0].cues} seed={D.mixes[0].seed} height={50} bars={100} unplayedColor="var(--fg-faint)" />
+          <Waveform progress={0} color={D.mixes[0].color} cues={[]} seed={D.mixes[0].seed} height={50} bars={100} unplayedColor="var(--fg-faint)" />
         </div>
       </div>
 

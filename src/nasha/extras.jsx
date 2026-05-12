@@ -3,7 +3,7 @@ import { Waveform } from './widgets.jsx';
 
 // Detect which platform a share URL points at so we can label the CTA
 // button correctly. Returns { name, host } or null for "unknown".
-function detectPlatform(input) {
+export function detectPlatform(input) {
   if (!input) return null;
   const url = input.trim().toLowerCase();
   if (url.includes('soundcloud.com')) return { name: 'SoundCloud', host: 'soundcloud' };
@@ -80,13 +80,10 @@ export function MixDetail({ mix, onClose, onPlay, accent }) {
 
         <div style={{ padding: '18px 28px', borderBottom: '1px solid var(--border)' }}>
           <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', fontFamily: 'var(--mono)', fontSize: 11, marginBottom: 14 }}>
-            <Stat k="BPM" v={mix.bpm} color={mix.color} />
-            <Stat k="KEY" v={mix.key} />
-            <Stat k="LENGTH" v={mix.length} />
-            <Stat k="PLAYS" v={mix.plays} />
+            <Stat k="LENGTH" v={mix.length} color={mix.color} />
             <Stat k="DATE" v={mix.date} />
           </div>
-          <Waveform progress={0.36} color={mix.color} cues={mix.cues} seed={mix.seed}
+          <Waveform progress={0.36} color={mix.color} cues={[]} seed={mix.seed}
             height={46} bars={120} unplayedColor="var(--fg-faint)" />
         </div>
 

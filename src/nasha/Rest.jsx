@@ -2,7 +2,7 @@ import React from 'react';
 import { Waveform, PlayIcon, Scribble, Marquee } from './widgets.jsx';
 import { HomeA } from './HomeFull.jsx';
 import { HomeAMin } from './HomeMin.jsx';
-import { MixDetail } from './extras.jsx';
+import { MixDetail, detectPlatform } from './extras.jsx';
 import { NASHA_DATA } from '../content.js';
 
 export function DeckA({ tweaks = {} }) {
@@ -66,7 +66,7 @@ export function DeckA({ tweaks = {} }) {
           borderBottom: '1px solid rgba(0,0,0,0.2)',
         }}>
           <Marquee speed={40}>
-            NOW SPINNING · {currentMix.title} · {currentMix.bpm} BPM · KEY {currentMix.key} · BOOKING OPEN FOR Q3 2026 · NEW MIX EVERY WEDNESDAY · AMSTERDAM · SANTIAGO · MEDELLÍN
+            NOW SPINNING · {currentMix.title} · {currentMix.genre} · BOOKING OPEN FOR Q3 2026 · NEW MIX EVERY WEDNESDAY · AMSTERDAM · SANTIAGO · MEDELLÍN
           </Marquee>
         </div>
       )}
@@ -199,19 +199,19 @@ function MixesA({ D, playingIdx, setPlayingIdx, progress, isPlaying, setIsPlayin
           padding: 0, overflow: 'hidden',
         }}>
           <div style={{
-            display: 'grid', gridTemplateColumns: '40px 1fr 240px 70px 60px 60px 80px 44px',
+            display: 'grid', gridTemplateColumns: '40px 1fr 240px 70px 180px',
             gap: 12, padding: '10px 16px',
             fontFamily: 'var(--mono)', fontSize: 9, letterSpacing: '0.15em',
             color: 'var(--fg-faint)', borderBottom: '1px solid var(--border)',
           }}>
-            <div>#</div><div>TRACK</div><div>WAVEFORM</div><div>BPM</div>
-            <div>KEY</div><div>TIME</div><div style={{ textAlign: 'right' }}>PLAYS</div><div></div>
+            <div>#</div><div>TRACK</div><div>WAVEFORM</div><div>TIME</div><div></div>
           </div>
           {D.mixes.map((m, i) => {
             const isCurrent = i === playingIdx;
+            const platform = detectPlatform(m.embedUrl);
             return (
               <div key={m.id} onClick={() => onOpenMix && onOpenMix(m)} style={{
-                display: 'grid', gridTemplateColumns: '40px 1fr 240px 70px 60px 60px 80px 44px',
+                display: 'grid', gridTemplateColumns: '40px 1fr 240px 70px 180px',
                 gap: 12, alignItems: 'center', padding: '12px 16px', cursor: 'pointer',
                 background: isCurrent ? `${accent}11` : 'transparent',
                 borderBottom: '1px solid var(--border-soft)',
@@ -219,70 +219,78 @@ function MixesA({ D, playingIdx, setPlayingIdx, progress, isPlaying, setIsPlayin
                 fontFamily: 'var(--mono)', transition: 'background 0.1s',
               }}>
                 <div style={{ fontSize: 10, color: isCurrent ? accent : 'var(--fg-faint)' }}>
-                  {isCurrent && isPlaying ? '▶' : String(i + 1).padStart(2, '0')}
+                  {String(i + 1).padStart(2, '0')}
                 </div>
                 <div>
                   <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--fg)', fontFamily: 'var(--display)', letterSpacing: '-0.005em' }}>{m.title}</div>
                   <div style={{ fontSize: 9, color: 'var(--fg-dim)', letterSpacing: '0.12em', marginTop: 3 }}>{m.genre}</div>
                 </div>
                 <div style={{ color: 'var(--fg-faint)' }}>
-                  <Waveform progress={isCurrent ? progress : 0} color={m.color} cues={m.cues} seed={m.seed} height={30} bars={80} unplayedColor="var(--fg-faint)" />
+                  <Waveform progress={0} color={m.color} cues={[]} seed={m.seed} height={30} bars={80} unplayedColor="var(--fg-faint)" />
                 </div>
-                <div style={{ fontSize: 11, color: m.color, fontWeight: 600 }}>{m.bpm}</div>
-                <div style={{ fontSize: 11, color: 'var(--fg)', opacity: 0.6 }}>{m.key}</div>
                 <div style={{ fontSize: 11, color: 'var(--fg)', opacity: 0.6 }}>{m.length}</div>
-                <div style={{ fontSize: 11, color: 'var(--fg)', opacity: 0.5, textAlign: 'right' }}>{m.plays}</div>
-                {m.embedUrl ? (
+                {platform ? (
                   <a href={m.embedUrl} target="_blank" rel="noopener noreferrer"
                     onClick={(e) => e.stopPropagation()}
-                    title={`Play "${m.title}" on its platform`}
+                    title={`Play "${m.title}" on ${platform.name}`}
                     style={{
-                      width: 32, height: 32, borderRadius: '50%',
                       background: m.color, color: '#000', textDecoration: 'none',
-                      cursor: 'pointer',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      padding: '8px 14px', borderRadius: 999,
+                      fontFamily: 'var(--mono)', fontSize: 10, fontWeight: 700, letterSpacing: '0.12em',
+                      display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                      whiteSpace: 'nowrap',
                     }}>
-                    <PlayIcon size={13} playing={false} />
+                    ▶ {platform.host === 'youtube' ? 'WATCH ON' : 'PLAY ON'} {platform.name.toUpperCase()}
                   </a>
                 ) : (
-                  <button onClick={(e) => { e.stopPropagation(); onOpenMix && onOpenMix(m); }}
-                    title="No stream link yet — open mix details"
-                    style={{
-                      width: 32, height: 32, borderRadius: '50%',
-                      background: 'var(--border)', color: 'var(--fg)',
-                      border: 'none', cursor: 'pointer',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      opacity: 0.6,
-                    }}>
-                    <PlayIcon size={13} playing={false} />
-                  </button>
+                  <div style={{
+                    fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--fg-faint)',
+                    letterSpacing: '0.12em', textAlign: 'center', opacity: 0.6,
+                  }}>NO LINK YET</div>
                 )}
               </div>
             );
           })}
         </div>
 
-        <div className="bento-card" style={{
-          gridColumn: 'span 7', background: D.mixes[playingIdx].color, color: '#000', padding: 24,
-          minHeight: 280, position: 'relative',
-        }}>
-          <div style={{ fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: '0.18em' }}>◉ FEATURED</div>
-          <div style={{ fontSize: 'clamp(32px, 4.5vw, 56px)', fontWeight: 900, letterSpacing: '-0.02em', lineHeight: 0.95, marginTop: 12 }}>
-            {D.mixes[playingIdx].title}
-          </div>
-          <div style={{ fontFamily: 'var(--mono)', fontSize: 12, letterSpacing: '0.1em', marginTop: 6 }}>
-            {D.mixes[playingIdx].genre}
-          </div>
-          <div style={{ display: 'flex', gap: 24, marginTop: 20, fontFamily: 'var(--mono)', fontSize: 11 }}>
-            <div><div style={{ opacity: 0.6, fontSize: 9 }}>BPM</div><div style={{ fontSize: 20, fontWeight: 700 }}>{D.mixes[playingIdx].bpm}</div></div>
-            <div><div style={{ opacity: 0.6, fontSize: 9 }}>KEY</div><div style={{ fontSize: 20, fontWeight: 700 }}>{D.mixes[playingIdx].key}</div></div>
-            <div><div style={{ opacity: 0.6, fontSize: 9 }}>LENGTH</div><div style={{ fontSize: 20, fontWeight: 700 }}>{D.mixes[playingIdx].length}</div></div>
-            <div><div style={{ opacity: 0.6, fontSize: 9 }}>PLAYS</div><div style={{ fontSize: 20, fontWeight: 700 }}>{D.mixes[playingIdx].plays}</div></div>
-          </div>
-          <div style={{ position: 'absolute', top: 20, right: 20 }}>
-            <Scribble variant="star" color="#000" width={60} height={50} opacity={0.85} />
-          </div>
-        </div>
+        {(() => {
+          const m = D.mixes[playingIdx];
+          const platform = detectPlatform(m.embedUrl);
+          return (
+            <div className="bento-card" style={{
+              gridColumn: 'span 7', background: m.color, color: '#000', padding: 24,
+              minHeight: 280, position: 'relative',
+              display: 'flex', flexDirection: 'column',
+            }}>
+              <div style={{ fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: '0.18em' }}>◉ FEATURED</div>
+              <div style={{ fontSize: 'clamp(32px, 4.5vw, 56px)', fontWeight: 900, letterSpacing: '-0.02em', lineHeight: 0.95, marginTop: 12 }}>
+                {m.title}
+              </div>
+              <div style={{ fontFamily: 'var(--mono)', fontSize: 12, letterSpacing: '0.1em', marginTop: 6 }}>
+                {m.genre} · {m.length}
+              </div>
+              {m.blurb && (
+                <div style={{ fontSize: 15, lineHeight: 1.45, marginTop: 16, maxWidth: 560, letterSpacing: '-0.005em' }}>
+                  {m.blurb}
+                </div>
+              )}
+              {platform && (
+                <a href={m.embedUrl} target="_blank" rel="noopener noreferrer" style={{
+                  marginTop: 'auto', alignSelf: 'flex-start',
+                  background: '#0a0a0a', color: m.color, textDecoration: 'none',
+                  padding: '12px 22px', borderRadius: 999,
+                  fontFamily: 'var(--display)', fontSize: 13, fontWeight: 800, letterSpacing: '0.14em',
+                  display: 'inline-flex', alignItems: 'center', gap: 8,
+                }}>
+                  ▶ {platform.host === 'youtube' ? 'WATCH ON' : 'PLAY ON'} {platform.name.toUpperCase()} ↗
+                </a>
+              )}
+              <div style={{ position: 'absolute', top: 20, right: 20 }}>
+                <Scribble variant="star" color="#000" width={60} height={50} opacity={0.85} />
+              </div>
+            </div>
+          );
+        })()}
 
         <div className="bento-card" style={{
           gridColumn: 'span 5', background: 'var(--surface)', color: 'var(--fg)', padding: 20,
