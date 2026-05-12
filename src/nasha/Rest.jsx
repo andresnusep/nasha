@@ -232,15 +232,31 @@ function MixesA({ D, playingIdx, setPlayingIdx, progress, isPlaying, setIsPlayin
                 <div style={{ fontSize: 11, color: 'var(--fg)', opacity: 0.6 }}>{m.key}</div>
                 <div style={{ fontSize: 11, color: 'var(--fg)', opacity: 0.6 }}>{m.length}</div>
                 <div style={{ fontSize: 11, color: 'var(--fg)', opacity: 0.5, textAlign: 'right' }}>{m.plays}</div>
-                <button onClick={(e) => { e.stopPropagation(); setPlayingIdx(i); setIsPlaying(!(isCurrent && isPlaying)); }} style={{
-                  width: 32, height: 32, borderRadius: '50%',
-                  background: isCurrent ? m.color : 'var(--border)',
-                  color: isCurrent ? '#000' : 'var(--fg)',
-                  border: 'none', cursor: 'pointer',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                }}>
-                  <PlayIcon size={13} playing={isCurrent && isPlaying} />
-                </button>
+                {m.embedUrl ? (
+                  <a href={m.embedUrl} target="_blank" rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    title={`Play "${m.title}" on its platform`}
+                    style={{
+                      width: 32, height: 32, borderRadius: '50%',
+                      background: m.color, color: '#000', textDecoration: 'none',
+                      cursor: 'pointer',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}>
+                    <PlayIcon size={13} playing={false} />
+                  </a>
+                ) : (
+                  <button onClick={(e) => { e.stopPropagation(); onOpenMix && onOpenMix(m); }}
+                    title="No stream link yet — open mix details"
+                    style={{
+                      width: 32, height: 32, borderRadius: '50%',
+                      background: 'var(--border)', color: 'var(--fg)',
+                      border: 'none', cursor: 'pointer',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      opacity: 0.6,
+                    }}>
+                    <PlayIcon size={13} playing={false} />
+                  </button>
+                )}
               </div>
             );
           })}
