@@ -1,48 +1,17 @@
 import React from 'react';
 import { Waveform } from './widgets.jsx';
 
-// Turn a public share URL into something that can actually be iframed.
-// SoundCloud / Mixcloud / YouTube / Spotify all block their main domains
-// from being embedded (X-Frame-Options), and expose a separate /embed
-// or /widget/iframe URL for that. If the editor already pasted the
-// embed URL, pass through. If they pasted the share URL, convert.
-function normalizeEmbedUrl(input) {
+// Detect which platform a share URL points at so we can label the CTA
+// button correctly. Returns { name, host } or null for "unknown".
+function detectPlatform(input) {
   if (!input) return null;
-  const url = input.trim();
-
-  // Already a player/embed URL — pass through.
-  if (
-    url.startsWith('https://w.soundcloud.com/player/') ||
-    url.startsWith('https://www.mixcloud.com/widget/iframe/') ||
-    url.startsWith('https://www.youtube.com/embed/') ||
-    url.includes('open.spotify.com/embed/')
-  ) {
-    return url;
-  }
-
-  // SoundCloud share → player.
-  if (/^https?:\/\/soundcloud\.com\//.test(url)) {
-    return `https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&color=%23000000&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false`;
-  }
-
-  // Mixcloud share → widget.
-  if (/^https?:\/\/(www\.)?mixcloud\.com\//.test(url)) {
-    const path = url.replace(/^https?:\/\/(www\.)?mixcloud\.com/, '');
-    return `https://www.mixcloud.com/widget/iframe/?hide_cover=1&feed=${encodeURIComponent(path)}`;
-  }
-
-  // YouTube watch / short → embed.
-  const ytWatch = url.match(/[?&]v=([\w-]+)/);
-  const ytShort = url.match(/youtu\.be\/([\w-]+)/);
-  const ytId = ytWatch?.[1] || ytShort?.[1];
-  if (ytId) return `https://www.youtube.com/embed/${ytId}`;
-
-  // Spotify share → embed.
-  const sp = url.match(/open\.spotify\.com\/(track|episode|album|playlist)\/([\w]+)/);
-  if (sp) return `https://open.spotify.com/embed/${sp[1]}/${sp[2]}`;
-
-  // Unknown — let the iframe try; user will see the platform's error.
-  return url;
+  const url = input.trim().toLowerCase();
+  if (url.includes('soundcloud.com')) return { name: 'SoundCloud', host: 'soundcloud' };
+  if (url.includes('mixcloud.com')) return { name: 'Mixcloud', host: 'mixcloud' };
+  if (url.includes('youtube.com') || url.includes('youtu.be')) return { name: 'YouTube', host: 'youtube' };
+  if (url.includes('spotify.com')) return { name: 'Spotify', host: 'spotify' };
+  if (url.includes('bandcamp.com')) return { name: 'Bandcamp', host: 'bandcamp' };
+  return { name: 'Open mix', host: 'generic' };
 }
 
 export function MixDetail({ mix, onClose, onPlay, accent }) {
@@ -117,39 +86,31 @@ export function MixDetail({ mix, onClose, onPlay, accent }) {
             <Stat k="PLAYS" v={mix.plays} />
             <Stat k="DATE" v={mix.date} />
           </div>
-          {(() => {
-            const embed = normalizeEmbedUrl(mix.embedUrl);
-            if (!embed) {
-              return (
-                <Waveform progress={0.36} color={mix.color} cues={mix.cues} seed={mix.seed}
-                  height={46} bars={120} unplayedColor="var(--fg-faint)" />
-              );
-            }
-            return (
-              <iframe
-                title={`${mix.title} — audio player`}
-                src={embed}
-                width="100%"
-                height="180"
-                frameBorder="0"
-                allow="autoplay; encrypted-media"
-                style={{ display: 'block', borderRadius: 6, background: 'var(--surface-2)' }}
-              />
-            );
-          })()}
+          <Waveform progress={0.36} color={mix.color} cues={mix.cues} seed={mix.seed}
+            height={46} bars={120} unplayedColor="var(--fg-faint)" />
         </div>
 
         <div style={{ padding: '16px 28px', display: 'flex', gap: 8, flexWrap: 'wrap', borderBottom: '1px solid var(--border)' }}>
-          <button onClick={onPlay} style={{
-            background: accent, color: '#000', border: 'none',
-            padding: '10px 16px', borderRadius: 999,
-            fontFamily: 'var(--display)', fontSize: 12, fontWeight: 800, letterSpacing: '0.12em',
-            cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 6,
-          }}>▶ PLAY NOW</button>
-          <ActionBtn label="↓ DOWNLOAD" />
-          <ActionBtn label="↗ SHARE" />
-          <ActionBtn label="☁ SOUNDCLOUD" />
-          <ActionBtn label="♥ SAVE" />
+          {(() => {
+            const platform = detectPlatform(mix.embedUrl);
+            if (!platform) {
+              return (
+                <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--fg-faint)', letterSpacing: '0.12em', padding: '10px 0' }}>
+                  NO STREAM LINK YET
+                </div>
+              );
+            }
+            return (
+              <a href={mix.embedUrl} target="_blank" rel="noopener noreferrer" style={{
+                background: accent, color: '#000', textDecoration: 'none',
+                padding: '12px 20px', borderRadius: 999,
+                fontFamily: 'var(--display)', fontSize: 13, fontWeight: 800, letterSpacing: '0.14em',
+                cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 8,
+              }}>
+                ▶ {platform.host === 'youtube' ? 'WATCH ON' : 'PLAY ON'} {platform.name.toUpperCase()} ↗
+              </a>
+            );
+          })()}
         </div>
 
         <div style={{ padding: '18px 28px 28px' }}>

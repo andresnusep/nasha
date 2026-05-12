@@ -123,10 +123,10 @@ collections:
       - { name: venue, label: Recorded at, widget: string }
       - { name: blurb, label: Blurb, widget: text }
       - name: embedUrl
-        label: Audio embed URL
+        label: Stream URL
         widget: string
         required: false
-        hint: 'Paste the regular share URL — e.g. https://soundcloud.com/nashabiggi/your-mix, https://www.mixcloud.com/nashabiggi/your-mix/, a YouTube link, or a Spotify link. The site auto-converts it into the right embed player. Leave empty to fall back to the decorative waveform.'
+        hint: 'Where the mix lives — paste the SoundCloud / Mixcloud / YouTube / Spotify / Bandcamp URL. The mix detail modal will show a big "Play on [platform]" button that opens it in a new tab. Leave empty for no button.'
       - name: tracklist
         label: Tracklist
         widget: list
