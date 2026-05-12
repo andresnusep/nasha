@@ -1,18 +1,10 @@
 {
-  "id": "m3",
-  "order": 3,
-  "title": "Late Night Baile",
-  "genre": "LATIN CLUB",
-  "bpm": 100,
-  "key": "8B",
-  "length": "64:03",
-  "plays": "22.5K",
+  "cues": [
+    0.88
+  ],
+  "genre": "REGGAETON",
   "color": "#a87bff",
-  "cues": [0.1, 0.28, 0.48, 0.68, 0.88],
-  "seed": 41,
-  "date": "2025-12-18",
-  "venue": "Shelter AMS",
-  "blurb": "The 5am closing set. For when the lights are still off and nobody wants to leave.",
+  "length": "31:28",
   "tracklist": [
     "ARCA — KLK (Nasha Rework)",
     "TOKISCHA — Popola",
@@ -23,5 +15,16 @@
     "MS NINA — Tu Sicaria",
     "BRISA FENOY — Tu Cancion",
     "NATHY PELUSO — Business Woman"
-  ]
+  ],
+  "order": 3,
+  "date": "2025-12-18",
+  "venue": "Shelter AMS",
+  "seed": 41,
+  "embedUrl": "https://www.youtube.com/watch?v=bwjwCFPF2Ns&t=1s",
+  "title": "Reggaeton Party 2025",
+  "blurb": "The 5am closing set. For when the lights are still off and nobody wants to leave.",
+  "id": "m3",
+  "bpm": 100,
+  "key": "8B",
+  "plays": "22.5K"
 }
