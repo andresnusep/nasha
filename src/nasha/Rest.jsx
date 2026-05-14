@@ -228,7 +228,7 @@ function MixesA({ D, playingIdx, setPlayingIdx, progress, isPlaying, setIsPlayin
                       display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 6,
                       whiteSpace: 'nowrap',
                     }}>
-                    ▶ {platform.host === 'youtube' ? 'WATCH' : 'PLAY'}
+                    {platform.host === 'youtube' ? 'WATCH' : 'PLAY'}
                   </a>
                 ) : (
                   <div style={{
@@ -270,7 +270,7 @@ function MixesA({ D, playingIdx, setPlayingIdx, progress, isPlaying, setIsPlayin
                   fontFamily: 'var(--display)', fontSize: 13, fontWeight: 800, letterSpacing: '0.14em',
                   display: 'inline-flex', alignItems: 'center', gap: 8,
                 }}>
-                  ▶ {platform.host === 'youtube' ? 'WATCH ON' : 'PLAY ON'} {platform.name.toUpperCase()} ↗
+                  {platform.host === 'youtube' ? 'WATCH ON' : 'PLAY ON'} {platform.name.toUpperCase()} ↗
                 </a>
               )}
               <div style={{ position: 'absolute', top: 20, right: 20 }}>
