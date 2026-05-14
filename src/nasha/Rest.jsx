@@ -361,9 +361,12 @@ function GigsA({ D, accent }) {
               GIGS
             </div>
           </div>
-          <div style={{ fontFamily: 'var(--mono)', fontSize: 12, lineHeight: 1.5, maxWidth: 320, textAlign: 'right' }}>
-            {upcomingAll.length} UPCOMING · {D.gigs.filter(g => gigStatus(g) === 'PLAYED').length} PLAYED<br />
-            AMSTERDAM · ROTTERDAM · EU
+          <div className="gigs-meta" style={{ fontFamily: 'var(--mono)', fontSize: 12, lineHeight: 1.5, maxWidth: 320, textAlign: 'right' }}>
+            <span className="gigs-meta-count">{upcomingAll.length} UPCOMING</span>
+            <span className="gigs-meta-sep"> · </span>
+            <span className="gigs-meta-count">{D.gigs.filter(g => gigStatus(g) === 'PLAYED').length} PLAYED</span>
+            <br className="gigs-meta-br" />
+            <span className="gigs-meta-cities">AMSTERDAM · ROTTERDAM · EU</span>
           </div>
         </div>
 

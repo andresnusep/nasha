@@ -149,6 +149,18 @@ textarea {
     min-height: 320px !important;
   }
 
+  /* Gigs header: trim the meta block to just the two counts, each on
+     its own line. Drop the "·" separator, the cities line, and its
+     <br>. */
+  .gigs-meta-count {
+    display: block !important;
+  }
+  .gigs-meta-sep,
+  .gigs-meta-br,
+  .gigs-meta-cities {
+    display: none !important;
+  }
+
   /* Mixer block (HomeFull): let the knob/fader/VU cluster wrap. */
   .mixer-row {
     flex-wrap: wrap !important;
