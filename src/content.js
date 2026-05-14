@@ -25,13 +25,25 @@ const collect = (mods, sortKey) =>
     });
 
 const mixes = collect(mixModules, 'order');
-// Gigs are listed UPCOMING-first (chronological), then PLAYED (most recent first).
+
+// Date-based status: a gig is UPCOMING until midnight after its date, then
+// becomes PLAYED. Compared against local midnight today so the cutover
+// happens cleanly overnight. The manual `status` field in the JSON is
+// ignored at runtime (kept in the schema for now as a future override).
+export function gigStatus(g, today = new Date()) {
+  const gigDate = new Date(g.year, g.month, g.day);
+  const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  return gigDate >= todayStart ? 'UPCOMING' : 'PLAYED';
+}
+
+// Gigs are listed UPCOMING-first (soonest), then PLAYED (most recent first).
 const gigsRaw = Object.values(gigModules).map((m) => m.default ?? m);
+const today = new Date();
 const upcoming = gigsRaw
-  .filter((g) => g.status === 'UPCOMING')
+  .filter((g) => gigStatus(g, today) === 'UPCOMING')
   .sort((a, b) => a.year - b.year || a.month - b.month || a.day - b.day);
 const played = gigsRaw
-  .filter((g) => g.status !== 'UPCOMING')
+  .filter((g) => gigStatus(g, today) === 'PLAYED')
   .sort((a, b) => b.year - a.year || b.month - a.month || b.day - a.day);
 const gigs = [...upcoming, ...played];
 

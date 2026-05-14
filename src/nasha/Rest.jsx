@@ -3,7 +3,7 @@ import { Waveform, PlayIcon, Scribble, Marquee } from './widgets.jsx';
 import { HomeA } from './HomeFull.jsx';
 import { HomeAMin } from './HomeMin.jsx';
 import { MixDetail, detectPlatform } from './extras.jsx';
-import { NASHA_DATA } from '../content.js';
+import { NASHA_DATA, gigStatus } from '../content.js';
 
 export function DeckA({ tweaks = {} }) {
   const D = NASHA_DATA;
@@ -312,9 +312,32 @@ function MixesA({ D, playingIdx, setPlayingIdx, progress, isPlaying, setIsPlayin
 
 // ── GIGS (calendar + list) ────────────────────────────────────
 function GigsA({ D, accent }) {
-  const [month, setMonth] = React.useState(4);
-  const [year] = React.useState(2026);
-  const [selected, setSelected] = React.useState(null);
+  // Default month + selected-day track the next upcoming gig so the page
+  // lands on something useful instead of a blank "SELECT A DATE" panel.
+  const upcomingAll = React.useMemo(
+    () => D.gigs.filter((g) => gigStatus(g) === 'UPCOMING'),
+    [D.gigs]
+  );
+  const nextGig = upcomingAll[0];
+  const today = new Date();
+
+  const [month, setMonth] = React.useState(nextGig?.month ?? today.getMonth());
+  const [year, setYear] = React.useState(nextGig?.year ?? today.getFullYear());
+  // The month-change effect below sets the real value on mount too; null is
+  // just the pre-effect placeholder.
+  const [selected, setSelected] = React.useState(nextGig?.day ?? null);
+
+  // When the user navigates months, re-pick the most relevant day: next
+  // upcoming gig in that month, else the first played gig, else nothing.
+  React.useEffect(() => {
+    const gigsInMonth = D.gigs.filter((g) => g.month === month && g.year === year);
+    const upcomingInMonth = gigsInMonth
+      .filter((g) => gigStatus(g) === 'UPCOMING')
+      .sort((a, b) => a.day - b.day);
+    if (upcomingInMonth.length) setSelected(upcomingInMonth[0].day);
+    else if (gigsInMonth.length) setSelected(gigsInMonth[0].day);
+    else setSelected(null);
+  }, [month, year, D.gigs]);
 
   const monthNames = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
   const firstDay = new Date(year, month, 1).getDay();
@@ -322,7 +345,16 @@ function GigsA({ D, accent }) {
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const gigsThisMonth = D.gigs.filter((g) => g.month === month && g.year === year);
   const gigByDay = Object.fromEntries(gigsThisMonth.map((g) => [g.day, g]));
-  const upcoming = D.gigs.filter((g) => g.status === 'UPCOMING').sort((a, b) => a.month - b.month || a.day - b.day);
+
+  // Wrap month nav to also walk year boundaries.
+  const goMonth = (delta) => {
+    let m = month + delta;
+    let y = year;
+    if (m < 0) { m = 11; y -= 1; }
+    if (m > 11) { m = 0; y += 1; }
+    setMonth(m);
+    setYear(y);
+  };
 
   const cells = [];
   for (let i = 0; i < mondayOffset; i++) cells.push(null);
@@ -342,7 +374,7 @@ function GigsA({ D, accent }) {
             </div>
           </div>
           <div style={{ fontFamily: 'var(--mono)', fontSize: 12, lineHeight: 1.5, maxWidth: 320, textAlign: 'right' }}>
-            {upcoming.length} UPCOMING · {D.gigs.filter(g => g.status === 'PLAYED').length} PLAYED<br />
+            {upcomingAll.length} UPCOMING · {D.gigs.filter(g => gigStatus(g) === 'PLAYED').length} PLAYED<br />
             AMSTERDAM · ROTTERDAM · EU
           </div>
         </div>
@@ -357,12 +389,12 @@ function GigsA({ D, accent }) {
               <div style={{ fontFamily: 'var(--mono)', fontSize: 14, color: 'var(--fg-dim)' }}>{year}</div>
             </div>
             <div style={{ display: 'flex', gap: 6 }}>
-              <button onClick={() => setMonth(Math.max(0, month - 1))} style={{
+              <button onClick={() => goMonth(-1)} style={{
                 background: 'transparent', border: '1px solid var(--border)',
                 color: 'var(--fg)', width: 30, height: 30, borderRadius: '50%',
                 cursor: 'pointer', fontFamily: 'var(--mono)',
               }}>‹</button>
-              <button onClick={() => setMonth(Math.min(11, month + 1))} style={{
+              <button onClick={() => goMonth(1)} style={{
                 background: 'transparent', border: '1px solid var(--border)',
                 color: 'var(--fg)', width: 30, height: 30, borderRadius: '50%',
                 cursor: 'pointer', fontFamily: 'var(--mono)',
@@ -382,10 +414,11 @@ function GigsA({ D, accent }) {
               if (d === null) return <div key={i} />;
               const gig = gigByDay[d];
               const isSelected = selected === d;
+              const status = gig ? gigStatus(gig) : null;
               return (
                 <button key={i} onClick={() => gig && setSelected(d)} style={{
-                  background: gig ? (gig.status === 'UPCOMING' ? accent : 'var(--surface)') : 'var(--surface-2)',
-                  color: gig?.status === 'UPCOMING' ? '#000' : 'var(--fg)',
+                  background: gig ? (status === 'UPCOMING' ? accent : 'var(--surface)') : 'var(--surface-2)',
+                  color: status === 'UPCOMING' ? '#000' : 'var(--fg)',
                   border: isSelected ? '2px solid var(--fg)' : '1px solid var(--border-soft)',
                   borderRadius: 8, padding: '8px 8px',
                   aspectRatio: '1/1',
@@ -417,13 +450,14 @@ function GigsA({ D, accent }) {
           </div>
           {selected && gigByDay[selected] ? (() => {
             const g = gigByDay[selected];
+            const status = gigStatus(g);
             return (
               <>
                 <div style={{ fontSize: 72, fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 0.9, marginTop: 14, color: accent }}>
                   {monthNames[g.month].slice(0, 3)}<br />{g.day}
                 </div>
                 <div style={{ fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: '0.15em', color: 'var(--fg-dim)', marginTop: 6 }}>
-                  {g.dow} · {g.status}
+                  {g.dow} · {status}
                 </div>
                 <div style={{ marginTop: 22 }}>
                   <div style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-0.015em' }}>{g.venue}</div>
@@ -434,7 +468,7 @@ function GigsA({ D, accent }) {
                   <DetailRow label="TIME" value={g.time} />
                   {g.tickets && <DetailRow label="TIX" value={g.tickets} />}
                 </div>
-                {g.status === 'UPCOMING' && (
+                {status === 'UPCOMING' && (
                   <button style={{
                     marginTop: 'auto', background: accent, color: '#000',
                     border: 'none', padding: '12px 18px', borderRadius: 999,
@@ -464,23 +498,26 @@ function GigsA({ D, accent }) {
             <span>◉ FULL SCHEDULE</span>
             <span>UPCOMING + PLAYED</span>
           </div>
-          {D.gigs.map((g, i) => (
-            <div key={i} style={{
-              display: 'grid', gridTemplateColumns: '90px 80px 1fr 200px 140px 80px',
-              gap: 12, padding: '12px 16px', borderBottom: '1px solid var(--border-soft)',
-              fontFamily: 'var(--mono)', fontSize: 12, alignItems: 'center',
-              opacity: g.status === 'PLAYED' ? 0.55 : 1,
-            }}>
-              <div style={{ color: g.status === 'UPCOMING' ? accent : 'var(--fg)', letterSpacing: '0.1em', fontWeight: 700 }}>{g.date}</div>
-              <div style={{ color: 'var(--fg-faint)', fontSize: 10, letterSpacing: '0.15em' }}>{g.dow}</div>
-              <div style={{ color: 'var(--fg)', fontFamily: 'var(--display)', fontWeight: 700, fontSize: 14 }}>{g.venue}</div>
-              <div style={{ color: 'var(--fg-dim)' }}>{g.city}</div>
-              <div style={{ color: 'var(--fg-dim)' }}>{g.kind}</div>
-              <div style={{ color: g.status === 'UPCOMING' ? accent : 'var(--fg-faint)', textAlign: 'right', fontSize: 10, letterSpacing: '0.15em' }}>
-                {g.status}
+          {D.gigs.map((g, i) => {
+            const status = gigStatus(g);
+            return (
+              <div key={i} style={{
+                display: 'grid', gridTemplateColumns: '90px 80px 1fr 200px 140px 80px',
+                gap: 12, padding: '12px 16px', borderBottom: '1px solid var(--border-soft)',
+                fontFamily: 'var(--mono)', fontSize: 12, alignItems: 'center',
+                opacity: status === 'PLAYED' ? 0.55 : 1,
+              }}>
+                <div style={{ color: status === 'UPCOMING' ? accent : 'var(--fg)', letterSpacing: '0.1em', fontWeight: 700 }}>{g.date}</div>
+                <div style={{ color: 'var(--fg-faint)', fontSize: 10, letterSpacing: '0.15em' }}>{g.dow}</div>
+                <div style={{ color: 'var(--fg)', fontFamily: 'var(--display)', fontWeight: 700, fontSize: 14 }}>{g.venue}</div>
+                <div style={{ color: 'var(--fg-dim)' }}>{g.city}</div>
+                <div style={{ color: 'var(--fg-dim)' }}>{g.kind}</div>
+                <div style={{ color: status === 'UPCOMING' ? accent : 'var(--fg-faint)', textAlign: 'right', fontSize: 10, letterSpacing: '0.15em' }}>
+                  {status}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>
