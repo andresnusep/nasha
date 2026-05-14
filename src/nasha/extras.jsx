@@ -104,7 +104,7 @@ export function MixDetail({ mix, onClose, onPlay, accent }) {
                 fontFamily: 'var(--display)', fontSize: 13, fontWeight: 800, letterSpacing: '0.14em',
                 cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 8,
               }}>
-                ▶ {platform.host === 'youtube' ? 'WATCH ON' : 'PLAY ON'} {platform.name.toUpperCase()} ↗
+                {platform.host === 'youtube' ? 'WATCH ON' : 'PLAY ON'} {platform.name.toUpperCase()}
               </a>
             );
           })()}

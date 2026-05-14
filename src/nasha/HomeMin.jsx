@@ -118,7 +118,7 @@ export function HomeAMin({ D, setSection, accent = '#c2ff00', gap = 12 }) {
                 fontFamily: 'var(--display)', fontSize: 14, fontWeight: 800, letterSpacing: '0.14em',
                 display: 'inline-flex', alignItems: 'center', gap: 8,
               }}>
-                {platform.host === 'youtube' ? 'WATCH ON' : 'LISTEN ON'} {platform.name.toUpperCase()} ↗
+                {platform.host === 'youtube' ? 'WATCH ON' : 'LISTEN ON'} {platform.name.toUpperCase()}
               </a>
             </div>
           );
