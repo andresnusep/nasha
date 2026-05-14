@@ -162,10 +162,10 @@ textarea {
   }
 
   /* Hero wordmark: the original clamp's 96px floor overflows on phones.
-     Drop it well below; the upper bound stays the same so desktop is
-     untouched. */
+     Drop the floor; the upper bound stays so desktop is untouched.
+     NOTE: do NOT set letter-spacing here — the TRACK knob controls it
+     via inline style, and an !important rule would override the knob. */
   .hero-min-word {
     font-size: clamp(56px, 15vw, 280px) !important;
-    letter-spacing: -0.02em !important;
   }
 }
