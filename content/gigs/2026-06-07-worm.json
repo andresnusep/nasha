@@ -1,13 +1,13 @@
 {
-  "date": "JUN 07",
-  "day": 7,
   "month": 5,
-  "year": 2026,
-  "dow": "SAT",
-  "venue": "WORM",
-  "city": "Rotterdam, NL",
+  "tickets": "https://www.thelatinxperience.com/",
+  "city": "Amsterdam, NL",
+  "dow": "SUN",
+  "time": "12:00 - 19:00 ",
+  "date": "JUN 28",
+  "venue": "The Latin Food Experience - IJLAND",
   "status": "UPCOMING",
-  "kind": "Perreo Nights",
-  "time": "23:00 – 02:00",
-  "tickets": "€15"
+  "kind": "Resident DJ",
+  "day": 28,
+  "year": 2026
 }
