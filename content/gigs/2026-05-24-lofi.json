@@ -1,13 +1,13 @@
 {
-  "date": "MAY 24",
-  "day": 24,
-  "month": 4,
-  "year": 2026,
-  "dow": "SAT",
-  "venue": "Lofi",
+  "month": 5,
+  "tickets": "https://www.thelatinxperience.com/",
   "city": "Amsterdam, NL",
+  "dow": "SAT",
+  "time": "12:00 - 19:00",
+  "date": "JUN 27",
+  "venue": "The Latin Food Experience - IJLAND",
   "status": "UPCOMING",
-  "kind": "Closing Set",
-  "time": "03:00 – 05:00",
-  "tickets": "€12"
+  "kind": "Resident DJ",
+  "day": 27,
+  "year": 2026
 }
