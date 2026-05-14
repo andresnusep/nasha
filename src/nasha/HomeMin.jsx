@@ -1,17 +1,18 @@
 import React from 'react';
-import { Knob, Fader } from './widgets.jsx';
+import { Knob } from './widgets.jsx';
 import { detectPlatform } from './extras.jsx';
 import { gigStatus } from '../content.js';
 
 export function HomeAMin({ D, setSection, accent = '#c2ff00', gap = 12 }) {
-  const [weight, setWeight] = React.useState(0.85);
-  const [tracking, setTracking] = React.useState(0.18);
+  // Three knobs, each storing a raw -1..1 value, mapped to a type axis.
+  // All knobs (no fader) so they behave identically and reliably on touch.
+  const [weightKnob, setWeightKnob] = React.useState(0.7);   // -1..1 → wght 100..900
+  const [trackKnob, setTrackKnob] = React.useState(-0.64);   // -1..1 → tracking -0.04..0.16em
+  const [italicKnob, setItalicKnob] = React.useState(-1);    // -1..1 → slant 0..14deg
 
-  const fontWeight = Math.round(100 + weight * 800);
-  const letterSpacing = (-0.04 + tracking * 0.2).toFixed(3) + 'em';
-
-  const [knobValue, setKnobValue] = React.useState(0.85 * 2 - 1);
-  React.useEffect(() => { setWeight((knobValue + 1) / 2); }, [knobValue]);
+  const fontWeight = Math.round(100 + ((weightKnob + 1) / 2) * 800);
+  const letterSpacing = (-0.04 + ((trackKnob + 1) / 2) * 0.2).toFixed(3) + 'em';
+  const slant = Math.round(((italicKnob + 1) / 2) * 14);
 
   return (
     <div style={{
@@ -41,10 +42,11 @@ export function HomeAMin({ D, setSection, accent = '#c2ff00', gap = 12 }) {
           fontWeight: fontWeight,
           lineHeight: 0.82,
           letterSpacing: letterSpacing,
+          fontStyle: slant > 0 ? `oblique ${slant}deg` : 'normal',
           textTransform: 'uppercase',
           margin: '8px 0',
           fontVariationSettings: `"wght" ${fontWeight}`,
-          transition: 'font-weight 0.05s linear',
+          transition: 'font-weight 0.05s linear, font-style 0.05s linear',
           userSelect: 'none',
         }}>
           NASHA
@@ -69,22 +71,13 @@ export function HomeAMin({ D, setSection, accent = '#c2ff00', gap = 12 }) {
           </div>
 
           <div style={{
-            display: 'flex', gap: 28, alignItems: 'center',
+            display: 'flex', gap: 24, alignItems: 'center',
             background: 'rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.18)',
-            borderRadius: 6, padding: '14px 18px',
+            borderRadius: 6, padding: '16px 20px',
           }}>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
-              <Knob value={knobValue} onChange={setKnobValue} label="WEIGHT" color="#000" size={48} min={-1} max={1} />
-              <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: '#000', opacity: 0.65, letterSpacing: '0.1em' }}>
-                {fontWeight}
-              </div>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
-              <Fader value={tracking} onChange={setTracking} label="TRACK" color="#000" height={70} />
-              <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: '#000', opacity: 0.65, letterSpacing: '0.1em' }}>
-                {letterSpacing}
-              </div>
-            </div>
+            <Knob value={weightKnob} onChange={setWeightKnob} label="WEIGHT" color="#000" size={48} min={-1} max={1} />
+            <Knob value={trackKnob} onChange={setTrackKnob} label="TRACK" color="#000" size={48} min={-1} max={1} />
+            <Knob value={italicKnob} onChange={setItalicKnob} label="ITALIC" color="#000" size={48} min={-1} max={1} />
           </div>
         </div>
       </div>
