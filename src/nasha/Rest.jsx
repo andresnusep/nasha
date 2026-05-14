@@ -183,9 +183,9 @@ function MixesA({ D, playingIdx, setPlayingIdx, progress, isPlaying, setIsPlayin
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
             <div>
-              <div style={{ fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.18em' }}>◉ LIBRARY / 24 MIXES</div>
+              <div style={{ fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.18em' }}>◉ LIBRARY</div>
               <div style={{ fontSize: 'clamp(48px, 7vw, 96px)', fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 0.9, marginTop: 6 }}>
-                CRATE.MIXES
+                MIXES
               </div>
             </div>
             <div style={{ fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.12em', textAlign: 'right', maxWidth: 280 }}>
@@ -194,25 +194,17 @@ function MixesA({ D, playingIdx, setPlayingIdx, progress, isPlaying, setIsPlayin
           </div>
         </div>
 
-        <div className="bento-card mixes-table" style={{
+        <div className="bento-card" style={{
           gridColumn: 'span 12', background: 'var(--surface-2)', border: '1px solid var(--border-soft)',
           padding: 0, overflow: 'hidden',
         }}>
-          <div style={{
-            display: 'grid', gridTemplateColumns: '40px 1fr 240px 70px 180px',
-            gap: 12, padding: '10px 16px',
-            fontFamily: 'var(--mono)', fontSize: 9, letterSpacing: '0.15em',
-            color: 'var(--fg-faint)', borderBottom: '1px solid var(--border)',
-          }}>
-            <div>#</div><div>TRACK</div><div>WAVEFORM</div><div>TIME</div><div></div>
-          </div>
           {D.mixes.map((m, i) => {
             const isCurrent = i === playingIdx;
             const platform = detectPlatform(m.embedUrl);
             return (
-              <div key={m.id} onClick={() => onOpenMix && onOpenMix(m)} style={{
-                display: 'grid', gridTemplateColumns: '40px 1fr 240px 70px 180px',
-                gap: 12, alignItems: 'center', padding: '12px 16px', cursor: 'pointer',
+              <div key={m.id} className="mix-row" onClick={() => onOpenMix && onOpenMix(m)} style={{
+                display: 'grid', gridTemplateColumns: '40px 1fr auto',
+                gap: 12, alignItems: 'center', padding: '16px', cursor: 'pointer',
                 background: isCurrent ? `${accent}11` : 'transparent',
                 borderBottom: '1px solid var(--border-soft)',
                 borderLeft: isCurrent ? `3px solid ${accent}` : '3px solid transparent',
@@ -222,31 +214,27 @@ function MixesA({ D, playingIdx, setPlayingIdx, progress, isPlaying, setIsPlayin
                   {String(i + 1).padStart(2, '0')}
                 </div>
                 <div>
-                  <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--fg)', fontFamily: 'var(--display)', letterSpacing: '-0.005em' }}>{m.title}</div>
+                  <div style={{ fontSize: 15, fontWeight: 600, color: 'var(--fg)', fontFamily: 'var(--display)', letterSpacing: '-0.005em' }}>{m.title}</div>
                   <div style={{ fontSize: 9, color: 'var(--fg-dim)', letterSpacing: '0.12em', marginTop: 3 }}>{m.genre}</div>
                 </div>
-                <div style={{ color: 'var(--fg-faint)' }}>
-                  <Waveform progress={0} color={m.color} cues={[]} seed={m.seed} height={30} bars={80} unplayedColor="var(--fg-faint)" />
-                </div>
-                <div style={{ fontSize: 11, color: 'var(--fg)', opacity: 0.6 }}>{m.length}</div>
                 {platform ? (
                   <a href={m.embedUrl} target="_blank" rel="noopener noreferrer"
                     onClick={(e) => e.stopPropagation()}
                     title={`Play "${m.title}" on ${platform.name}`}
                     style={{
                       background: m.color, color: '#000', textDecoration: 'none',
-                      padding: '8px 14px', borderRadius: 999,
-                      fontFamily: 'var(--mono)', fontSize: 10, fontWeight: 700, letterSpacing: '0.12em',
+                      padding: '9px 16px', borderRadius: 999,
+                      fontFamily: 'var(--mono)', fontSize: 10, fontWeight: 700, letterSpacing: '0.1em',
                       display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 6,
                       whiteSpace: 'nowrap',
                     }}>
-                    ▶ {platform.host === 'youtube' ? 'WATCH ON' : 'PLAY ON'} {platform.name.toUpperCase()}
+                    ▶ {platform.host === 'youtube' ? 'WATCH' : 'PLAY'}
                   </a>
                 ) : (
                   <div style={{
-                    fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--fg-faint)',
-                    letterSpacing: '0.12em', textAlign: 'center', opacity: 0.6,
-                  }}>NO LINK YET</div>
+                    fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--fg-faint)',
+                    letterSpacing: '0.1em', textAlign: 'right', opacity: 0.6,
+                  }}>NO LINK</div>
                 )}
               </div>
             );
@@ -370,7 +358,7 @@ function GigsA({ D, accent }) {
           <div>
             <div style={{ fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.18em' }}>◉ LIVE DATES</div>
             <div style={{ fontSize: 'clamp(48px, 7vw, 96px)', fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 0.9, marginTop: 6 }}>
-              ON.TOUR
+              GIGS
             </div>
           </div>
           <div style={{ fontFamily: 'var(--mono)', fontSize: 12, lineHeight: 1.5, maxWidth: 320, textAlign: 'right' }}>
@@ -409,14 +397,14 @@ function GigsA({ D, accent }) {
             ))}
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 4 }}>
+          <div className="calendar-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 4 }}>
             {cells.map((d, i) => {
               if (d === null) return <div key={i} />;
               const gig = gigByDay[d];
               const isSelected = selected === d;
               const status = gig ? gigStatus(gig) : null;
               return (
-                <button key={i} onClick={() => gig && setSelected(d)} style={{
+                <button key={i} className="calendar-cell" onClick={() => gig && setSelected(d)} style={{
                   background: gig ? (status === 'UPCOMING' ? accent : 'var(--surface)') : 'var(--surface-2)',
                   color: status === 'UPCOMING' ? '#000' : 'var(--fg)',
                   border: isSelected ? '2px solid var(--fg)' : '1px solid var(--border-soft)',
@@ -427,9 +415,9 @@ function GigsA({ D, accent }) {
                   transition: 'transform 0.12s, border 0.12s',
                   transform: isSelected ? 'scale(1.02)' : 'scale(1)',
                 }}>
-                  <div style={{ fontFamily: 'var(--mono)', fontSize: 13, fontWeight: 700 }}>{d}</div>
+                  <div className="calendar-cell-day" style={{ fontFamily: 'var(--mono)', fontSize: 13, fontWeight: 700 }}>{d}</div>
                   {gig && (
-                    <div style={{ fontFamily: 'var(--mono)', fontSize: 8, letterSpacing: '0.08em',
+                    <div className="calendar-cell-venue" style={{ fontFamily: 'var(--mono)', fontSize: 8, letterSpacing: '0.08em',
                       textAlign: 'left', lineHeight: 1.25, opacity: 0.9, fontWeight: 600 }}>
                       {gig.venue.toUpperCase()}
                     </div>
@@ -501,18 +489,18 @@ function GigsA({ D, accent }) {
           {D.gigs.map((g, i) => {
             const status = gigStatus(g);
             return (
-              <div key={i} style={{
+              <div key={i} className="schedule-row" style={{
                 display: 'grid', gridTemplateColumns: '90px 80px 1fr 200px 140px 80px',
                 gap: 12, padding: '12px 16px', borderBottom: '1px solid var(--border-soft)',
                 fontFamily: 'var(--mono)', fontSize: 12, alignItems: 'center',
                 opacity: status === 'PLAYED' ? 0.55 : 1,
               }}>
-                <div style={{ color: status === 'UPCOMING' ? accent : 'var(--fg)', letterSpacing: '0.1em', fontWeight: 700 }}>{g.date}</div>
-                <div style={{ color: 'var(--fg-faint)', fontSize: 10, letterSpacing: '0.15em' }}>{g.dow}</div>
-                <div style={{ color: 'var(--fg)', fontFamily: 'var(--display)', fontWeight: 700, fontSize: 14 }}>{g.venue}</div>
-                <div style={{ color: 'var(--fg-dim)' }}>{g.city}</div>
-                <div style={{ color: 'var(--fg-dim)' }}>{g.kind}</div>
-                <div style={{ color: status === 'UPCOMING' ? accent : 'var(--fg-faint)', textAlign: 'right', fontSize: 10, letterSpacing: '0.15em' }}>
+                <div className="sr-date" style={{ color: status === 'UPCOMING' ? accent : 'var(--fg)', letterSpacing: '0.1em', fontWeight: 700 }}>{g.date}</div>
+                <div className="sr-dow" style={{ color: 'var(--fg-faint)', fontSize: 10, letterSpacing: '0.15em' }}>{g.dow}</div>
+                <div className="sr-venue" style={{ color: 'var(--fg)', fontFamily: 'var(--display)', fontWeight: 700, fontSize: 14 }}>{g.venue}</div>
+                <div className="sr-city" style={{ color: 'var(--fg-dim)' }}>{g.city}</div>
+                <div className="sr-kind" style={{ color: 'var(--fg-dim)' }}>{g.kind}</div>
+                <div className="sr-status" style={{ color: status === 'UPCOMING' ? accent : 'var(--fg-faint)', textAlign: 'right', fontSize: 10, letterSpacing: '0.15em' }}>
                   {status}
                 </div>
               </div>

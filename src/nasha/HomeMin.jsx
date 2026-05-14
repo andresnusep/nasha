@@ -1,5 +1,7 @@
 import React from 'react';
-import { Knob, Fader, Waveform } from './widgets.jsx';
+import { Knob, Fader } from './widgets.jsx';
+import { detectPlatform } from './extras.jsx';
+import { gigStatus } from '../content.js';
 
 export function HomeAMin({ D, setSection, accent = '#c2ff00', gap = 12 }) {
   const [weight, setWeight] = React.useState(0.85);
@@ -112,13 +114,26 @@ export function HomeAMin({ D, setSection, accent = '#c2ff00', gap = 12 }) {
         }}>
           {D.mixes[0].genre} · {D.mixes[0].length}
         </div>
-        <div style={{ marginTop: 18 }}>
-          <Waveform progress={0} color={D.mixes[0].color} cues={[]} seed={D.mixes[0].seed} height={50} bars={100} unplayedColor="var(--fg-faint)" />
-        </div>
+        {(() => {
+          const platform = detectPlatform(D.mixes[0].embedUrl);
+          if (!platform) return null;
+          return (
+            <div style={{ marginTop: 24, textAlign: 'center' }}>
+              <a href={D.mixes[0].embedUrl} target="_blank" rel="noopener noreferrer" style={{
+                background: D.mixes[0].color, color: '#000', textDecoration: 'none',
+                padding: '14px 28px', borderRadius: 999,
+                fontFamily: 'var(--display)', fontSize: 14, fontWeight: 800, letterSpacing: '0.14em',
+                display: 'inline-flex', alignItems: 'center', gap: 8,
+              }}>
+                ▶ {platform.host === 'youtube' ? 'WATCH ON' : 'LISTEN ON'} {platform.name.toUpperCase()} ↗
+              </a>
+            </div>
+          );
+        })()}
       </div>
 
       {/* Portrait */}
-      <div className="bento-card" style={{
+      <div className="bento-card portrait-card" style={{
         gridColumn: 'span 3', background: '#a87bff', minHeight: 240,
         position: 'relative', overflow: 'hidden', padding: 0,
         display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
@@ -165,7 +180,7 @@ export function HomeAMin({ D, setSection, accent = '#c2ff00', gap = 12 }) {
       }}>
         <div style={{ fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: '0.18em' }}>◉ NEXT GIG</div>
         {(() => {
-          const g = D.gigs.find((x) => x.status === 'UPCOMING');
+          const g = D.gigs.find((x) => gigStatus(x) === 'UPCOMING');
           if (!g) return null;
           return (
             <>

@@ -70,11 +70,16 @@ export function Fader({ value, onChange, color = '#c2ff00', height = 120, label 
 
   React.useEffect(() => {
     if (!dragging) return;
-    const onMove = (e) => handleMove(e.touches ? e.touches[0].clientY : e.clientY);
+    const onMove = (e) => {
+      // On touch, stop the page from scrolling while the finger drags
+      // the fader. Needs passive:false on the listener for this to apply.
+      if (e.touches) e.preventDefault();
+      handleMove(e.touches ? e.touches[0].clientY : e.clientY);
+    };
     const onUp = () => setDragging(false);
     window.addEventListener('mousemove', onMove);
     window.addEventListener('mouseup', onUp);
-    window.addEventListener('touchmove', onMove);
+    window.addEventListener('touchmove', onMove, { passive: false });
     window.addEventListener('touchend', onUp);
     return () => {
       window.removeEventListener('mousemove', onMove);
@@ -123,6 +128,8 @@ export function Knob({ value, onChange, label, color = '#c2ff00', size = 40, min
     const y = e.touches ? e.touches[0].clientY : e.clientY;
     startRef.current = { y, v: value };
     const onMove = (ev) => {
+      // Block page scroll while turning the knob on touch.
+      if (ev.touches) ev.preventDefault();
       const ny = ev.touches ? ev.touches[0].clientY : ev.clientY;
       const dy = startRef.current.y - ny;
       const nv = Math.max(min, Math.min(max, startRef.current.v + (dy / 100) * (max - min)));
@@ -136,7 +143,7 @@ export function Knob({ value, onChange, label, color = '#c2ff00', size = 40, min
     };
     window.addEventListener('mousemove', onMove);
     window.addEventListener('mouseup', onUp);
-    window.addEventListener('touchmove', onMove);
+    window.addEventListener('touchmove', onMove, { passive: false });
     window.addEventListener('touchend', onUp);
   };
 
