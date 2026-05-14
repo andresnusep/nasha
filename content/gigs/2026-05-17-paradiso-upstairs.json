@@ -1,13 +1,13 @@
 {
-  "date": "MAY 17",
-  "day": 17,
   "month": 4,
-  "year": 2026,
-  "dow": "SAT",
-  "venue": "Paradiso Upstairs",
+  "tickets": "https://www.thelatinxperience.com/",
   "city": "Amsterdam, NL",
+  "dow": "SAT",
+  "time": "12:00 - 19:00",
+  "date": "MAY 30",
+  "venue": "The Latin Experience (Puerto Rico) - IJLAND",
   "status": "UPCOMING",
-  "kind": "Baile Latino",
-  "time": "00:00 – 03:00",
-  "tickets": "€14"
+  "kind": "Resident DJ",
+  "day": 30,
+  "year": 2026
 }
