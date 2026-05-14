@@ -1,27 +1,87 @@
 {
   "quotes": [
-    { "text": "A selector who understands that perreo is as much a feeling as a genre. Every set is a room-reading masterclass.", "source": "Subbacultcha", "tone": "#c2ff00" },
-    { "text": "Nasha bridges Santiago street energy with Amsterdam's club craft. Unmissable.", "source": "Red Light Radio", "tone": "#ff4d1a" },
-    { "text": "One of the most exciting Latin selectors in the Netherlands right now.", "source": "Dekmantel Dispatch", "tone": "#a87bff" }
+    {
+      "text": "A selector who understands that perreo is as much a feeling as a genre. Every set is a room-reading masterclass.",
+      "source": "Subbacultcha",
+      "tone": "#c2ff00"
+    },
+    {
+      "text": "Nasha bridges Santiago street energy with Amsterdam's club craft. Unmissable.",
+      "source": "Red Light Radio",
+      "tone": "#ff4d1a"
+    },
+    {
+      "text": "One of the most exciting Latin selectors in the Netherlands right now.",
+      "source": "Dekmantel Dispatch",
+      "tone": "#a87bff"
+    }
   ],
   "rider": [
-    { "k": "SET LENGTH", "v": "60–120 min · open-to-close negotiable" },
-    { "k": "FORMAT", "v": "USB (FAT32) · Rekordbox-exported · backup USB on request" },
-    { "k": "MIN. CDJ", "v": "CDJ-2000NXS2 · DJM-900NXS2 · or equivalent" },
-    { "k": "MONITORS", "v": "2x full-range booth monitors · independent gain" },
-    { "k": "MIC", "v": "SM58 on booth · on request" },
-    { "k": "HOSPITALITY", "v": "Still + sparkling water · vegetarian meal · 1 guest" },
-    { "k": "TRAVEL", "v": "From AMS · economy flights · ground transfer · accommodation for out-of-NL" },
-    { "k": "ARRIVAL", "v": "60 min before set · soundcheck preferred" }
+    {
+      "k": "SET LENGTH",
+      "v": "60–120 min · open-to-close negotiable"
+    },
+    {
+      "k": "FORMAT",
+      "v": "USB (FAT32) · Rekordbox-exported · backup USB on request"
+    },
+    {
+      "k": "MIN. CDJ",
+      "v": "CDJ-2000NXS2 · DJM-900NXS2 · or equivalent"
+    },
+    {
+      "k": "MONITORS",
+      "v": "2x full-range booth monitors · independent gain"
+    },
+    {
+      "k": "MIC",
+      "v": "SM58 on booth · on request"
+    },
+    {
+      "k": "HOSPITALITY",
+      "v": "Still + sparkling water · vegetarian meal · 1 guest"
+    },
+    {
+      "k": "TRAVEL",
+      "v": "From AMS · economy flights · ground transfer · accommodation for out-of-NL"
+    },
+    {
+      "k": "ARRIVAL",
+      "v": "60 min before set · soundcheck preferred"
+    }
   ],
   "specs": [
-    { "k": "BASED", "v": "Amsterdam, NL" },
-    { "k": "FROM", "v": "Santiago, CL" },
-    { "k": "LANGUAGES", "v": "ES · EN · NL (beginner)" },
-    { "k": "GENRES", "v": "Reggaetón · Perreo · Dembow · Latin Club" },
-    { "k": "ACTIVE SINCE", "v": "Jan 2023" },
-    { "k": "RESIDENCIES", "v": "BounceSpace AMS · Lofi AMS" },
-    { "k": "AGENT", "v": "Direct — booking@nasha.fm" },
-    { "k": "SOCIAL", "v": "@ignasiabiggi · soundcloud/nashadj" }
+    {
+      "k": "BASED",
+      "v": "Amsterdam, NL"
+    },
+    {
+      "k": "FROM",
+      "v": "Santiago, CL"
+    },
+    {
+      "k": "LANGUAGES",
+      "v": "ES · EN · NL (beginner)"
+    },
+    {
+      "k": "GENRES",
+      "v": "Reggaetón · Perreo · Dembow · Latin Club"
+    },
+    {
+      "k": "ACTIVE SINCE",
+      "v": "Jan 2023"
+    },
+    {
+      "k": "RESIDENCIES",
+      "v": "The Latin Experience (AMS)"
+    },
+    {
+      "k": "AGENT",
+      "v": "Direct — ignasia.biggi@gmail.com"
+    },
+    {
+      "k": "SOCIAL",
+      "v": "@nashabiggi · soundcloud/nashadj"
+    }
   ]
 }
