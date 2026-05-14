@@ -1,13 +1,13 @@
 {
-  "month": 4,
+  "month": 5,
   "tickets": "https://www.thelatinxperience.com/",
   "city": "Amsterdam, NL",
-  "dow": "SAT",
+  "dow": "FRI",
   "time": "12:00 - 19:00",
-  "date": "MAY 30",
-  "venue": "The Latin Experience (Argentina) - IJLAND",
+  "date": "JUN 26",
+  "venue": "The Latin Food Experience - IJLAND",
   "status": "UPCOMING",
   "kind": "Resident DJ",
-  "day": 30,
+  "day": 26,
   "year": 2026
 }
