@@ -1,13 +1,13 @@
 {
-  "date": "MAY 03",
-  "day": 3,
   "month": 4,
-  "year": 2026,
+  "tickets": "",
+  "city": "Antwerp, BL",
   "dow": "SAT",
-  "venue": "BounceSpace",
-  "city": "Amsterdam, NL",
-  "status": "UPCOMING",
-  "kind": "Resident Night",
-  "time": "23:00 – 04:00",
-  "tickets": "SOLD OUT"
+  "time": "18:00 - 20:30",
+  "date": "MAY 09",
+  "venue": "Merecumbe - YUST Rooftop",
+  "status": "PLAYED",
+  "kind": "DJ SET",
+  "day": 9,
+  "year": 2026
 }
