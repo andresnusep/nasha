@@ -732,11 +732,52 @@ function PhotoPlaceholder({ label }) {
 }
 
 // ── BOOKING ───────────────────────────────────────────────────
+// Web3Forms public access key — safe to commit. It's tied to a single
+// destination email and can only POST submissions; can't be used to read
+// anything or change settings.
+const WEB3FORMS_ACCESS_KEY = '89486bac-a738-483d-99fb-aaff84918de2';
+
 function BookingA({ D, form, setForm, sent, setSent, accent }) {
-  const submit = (e) => {
+  const [status, setStatus] = React.useState('idle'); // idle | sending | error
+  const [errorMsg, setErrorMsg] = React.useState('');
+
+  const submit = async (e) => {
     e.preventDefault();
-    setSent(true);
-    setTimeout(() => setSent(false), 3500);
+    if (status === 'sending') return;
+    setStatus('sending');
+    setErrorMsg('');
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          subject: `Booking request — ${form.name || 'someone'}${form.venue ? ` · ${form.venue}` : ''}`,
+          from_name: form.name || 'Nasha portfolio',
+          name: form.name,
+          email: form.email,
+          date: form.date,
+          venue: form.venue,
+          message: form.msg,
+          // Honeypot — bots happily fill 'botcheck'; Web3Forms drops submissions
+          // where this field is non-empty before they ever hit the inbox.
+          botcheck: '',
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.success) {
+        setStatus('idle');
+        setSent(true);
+        setForm({ name: '', email: '', date: '', venue: '', msg: '' });
+        setTimeout(() => setSent(false), 6000);
+      } else {
+        setStatus('error');
+        setErrorMsg(data.message || `Couldn't send (HTTP ${res.status}). Try emailing directly.`);
+      }
+    } catch (err) {
+      setStatus('error');
+      setErrorMsg(`Network error — try again, or email directly.`);
+    }
   };
   return (
     <div style={{ marginTop: 12 }}>
@@ -785,12 +826,29 @@ function BookingA({ D, form, setForm, sent, setSent, accent }) {
                 <FormInputA label="VENUE / CITY" value={form.venue} onChange={(v) => setForm({ ...form, venue: v })} />
               </div>
               <FormInputA label="MESSAGE" value={form.msg} onChange={(v) => setForm({ ...form, msg: v })} textarea />
-              <button type="submit" style={{
-                background: accent, color: '#000', border: 'none',
+              {/* Honeypot — bots fill any visible-looking field, so we hide one
+                  with CSS rather than display:none (some bots skip those). */}
+              <input type="text" name="botcheck" tabIndex="-1" autoComplete="off"
+                style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }}
+                aria-hidden="true" />
+              <button type="submit" disabled={status === 'sending'} style={{
+                background: status === 'sending' ? 'var(--border)' : accent,
+                color: '#000', border: 'none',
                 padding: '14px 20px', fontFamily: 'var(--display)',
                 fontSize: 14, fontWeight: 800, letterSpacing: '0.15em',
-                borderRadius: 999, cursor: 'pointer', marginTop: 4,
-              }}>SEND REQUEST →</button>
+                borderRadius: 999, cursor: status === 'sending' ? 'wait' : 'pointer',
+                marginTop: 4, opacity: status === 'sending' ? 0.7 : 1,
+              }}>
+                {status === 'sending' ? 'SENDING…' : 'SEND REQUEST →'}
+              </button>
+              {status === 'error' && (
+                <div style={{
+                  fontFamily: 'var(--mono)', fontSize: 11, color: '#ff4d1a',
+                  letterSpacing: '0.05em', lineHeight: 1.45, marginTop: 4,
+                }}>
+                  ◉ {errorMsg}
+                </div>
+              )}
             </form>
           )}
         </div>
