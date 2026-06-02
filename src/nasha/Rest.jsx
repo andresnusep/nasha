@@ -332,7 +332,13 @@ function GigsA({ D, accent }) {
   const mondayOffset = (firstDay + 6) % 7;
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const gigsThisMonth = D.gigs.filter((g) => g.month === month && g.year === year);
-  const gigByDay = Object.fromEntries(gigsThisMonth.map((g) => [g.day, g]));
+  // Multiple gigs can share a day (two clubs in one night, festival back-to-back,
+  // etc.). Group by day so the cell can render a count badge and the detail
+  // panel can list all of them.
+  const gigsByDay = gigsThisMonth.reduce((acc, g) => {
+    (acc[g.day] = acc[g.day] || []).push(g);
+    return acc;
+  }, {});
 
   // Wrap month nav to also walk year boundaries.
   const goMonth = (delta) => {
@@ -403,26 +409,45 @@ function GigsA({ D, accent }) {
           <div className="calendar-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 4 }}>
             {cells.map((d, i) => {
               if (d === null) return <div key={i} />;
-              const gig = gigByDay[d];
+              const dayGigs = gigsByDay[d];
+              const hasGigs = dayGigs && dayGigs.length > 0;
               const isSelected = selected === d;
-              const status = gig ? gigStatus(gig) : null;
+              // A day with any upcoming gig is treated as UPCOMING for colouring.
+              const anyUpcoming = hasGigs && dayGigs.some((g) => gigStatus(g) === 'UPCOMING');
+              const status = anyUpcoming ? 'UPCOMING' : (hasGigs ? 'PLAYED' : null);
               return (
-                <button key={i} className="calendar-cell" onClick={() => gig && setSelected(d)} style={{
-                  background: gig ? (status === 'UPCOMING' ? accent : 'var(--surface)') : 'var(--surface-2)',
+                <button key={i} className="calendar-cell" onClick={() => hasGigs && setSelected(d)} style={{
+                  background: hasGigs ? (status === 'UPCOMING' ? accent : 'var(--surface)') : 'var(--surface-2)',
                   color: status === 'UPCOMING' ? '#000' : 'var(--fg)',
                   border: isSelected ? '2px solid var(--fg)' : '1px solid var(--border-soft)',
                   borderRadius: 8, padding: '8px 8px',
                   aspectRatio: '1/1',
-                  cursor: gig ? 'pointer' : 'default',
+                  cursor: hasGigs ? 'pointer' : 'default',
                   display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-between',
+                  position: 'relative',
                   transition: 'transform 0.12s, border 0.12s',
                   transform: isSelected ? 'scale(1.02)' : 'scale(1)',
                 }}>
                   <div className="calendar-cell-day" style={{ fontFamily: 'var(--mono)', fontSize: 13, fontWeight: 700 }}>{d}</div>
-                  {gig && (
+                  {/* Multi-gig badge — corner pill with the count. */}
+                  {hasGigs && dayGigs.length > 1 && (
+                    <div style={{
+                      position: 'absolute', top: 4, right: 4,
+                      background: '#0a0a0a', color: '#fff',
+                      fontFamily: 'var(--mono)', fontSize: 8, fontWeight: 700,
+                      letterSpacing: '0.05em',
+                      padding: '2px 5px', borderRadius: 999, lineHeight: 1,
+                    }}>
+                      ×{dayGigs.length}
+                    </div>
+                  )}
+                  {hasGigs && (
                     <div className="calendar-cell-venue" style={{ fontFamily: 'var(--mono)', fontSize: 8, letterSpacing: '0.08em',
                       textAlign: 'left', lineHeight: 1.25, opacity: 0.9, fontWeight: 600 }}>
-                      {gig.venue.toUpperCase()}
+                      {dayGigs[0].venue.toUpperCase()}
+                      {dayGigs.length > 1 && (
+                        <span style={{ opacity: 0.7 }}> +{dayGigs.length - 1}</span>
+                      )}
                     </div>
                   )}
                 </button>
@@ -437,38 +462,61 @@ function GigsA({ D, accent }) {
           display: 'flex', flexDirection: 'column',
         }}>
           <div style={{ fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: '0.18em', color: 'var(--fg-dim)' }}>
-            ◉ {selected && gigByDay[selected] ? 'GIG DETAILS' : 'SELECT A DATE →'}
+            ◉ {selected && gigsByDay[selected] ? (gigsByDay[selected].length > 1 ? `${gigsByDay[selected].length} GIGS` : 'GIG DETAILS') : 'SELECT A DATE →'}
           </div>
-          {selected && gigByDay[selected] ? (() => {
-            const g = gigByDay[selected];
-            const status = gigStatus(g);
+          {selected && gigsByDay[selected] ? (() => {
+            const dayGigs = gigsByDay[selected];
+            const first = dayGigs[0];
+            const anyUpcoming = dayGigs.some((g) => gigStatus(g) === 'UPCOMING');
+            const headerStatus = anyUpcoming ? 'UPCOMING' : 'PLAYED';
             return (
               <>
+                {/* Date header — shown once for the whole day. */}
                 <div style={{ fontSize: 72, fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 0.9, marginTop: 14, color: accent }}>
-                  {monthNames[g.month].slice(0, 3)}<br />{g.day}
+                  {monthNames[first.month].slice(0, 3)}<br />{first.day}
                 </div>
                 <div style={{ fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: '0.15em', color: 'var(--fg-dim)', marginTop: 6 }}>
-                  {g.dow} · {status}
+                  {first.dow} · {headerStatus}
                 </div>
-                <div style={{ marginTop: 22 }}>
-                  <div style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-0.015em' }}>{g.venue}</div>
-                  <div style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--fg-dim)', marginTop: 4 }}>{g.city}</div>
+
+                {/* One block per gig, separated by a hairline. */}
+                <div style={{ marginTop: 18, display: 'flex', flexDirection: 'column', gap: 18 }}>
+                  {dayGigs.map((g, i) => {
+                    const status = gigStatus(g);
+                    return (
+                      <div key={i} style={{
+                        paddingTop: i === 0 ? 0 : 14,
+                        borderTop: i === 0 ? 'none' : '1px solid var(--border)',
+                      }}>
+                        {dayGigs.length > 1 && (
+                          <div style={{
+                            fontFamily: 'var(--mono)', fontSize: 9, letterSpacing: '0.18em',
+                            color: 'var(--fg-faint)', marginBottom: 6,
+                          }}>
+                            SET {String(i + 1).padStart(2, '0')} / {String(dayGigs.length).padStart(2, '0')}
+                          </div>
+                        )}
+                        <div style={{ fontSize: 22, fontWeight: 800, letterSpacing: '-0.015em', lineHeight: 1.1 }}>{g.venue}</div>
+                        <div style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--fg-dim)', marginTop: 4 }}>{g.city}</div>
+                        <div style={{ marginTop: 10, display: 'flex', flexDirection: 'column', gap: 6 }}>
+                          <DetailRow label="SET" value={g.kind} />
+                          <DetailRow label="TIME" value={g.time} />
+                          {g.tickets && <DetailRow label="TIX" value={g.tickets} />}
+                        </div>
+                        {status === 'UPCOMING' && (
+                          <button style={{
+                            marginTop: 12, background: accent, color: '#000',
+                            border: 'none', padding: '10px 16px', borderRadius: 999,
+                            fontFamily: 'var(--display)', fontWeight: 800, fontSize: 12,
+                            letterSpacing: '0.12em', cursor: 'pointer',
+                          }}>
+                            GET TICKETS →
+                          </button>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
-                <div style={{ marginTop: 18, display: 'flex', flexDirection: 'column', gap: 8 }}>
-                  <DetailRow label="SET" value={g.kind} />
-                  <DetailRow label="TIME" value={g.time} />
-                  {g.tickets && <DetailRow label="TIX" value={g.tickets} />}
-                </div>
-                {status === 'UPCOMING' && (
-                  <button style={{
-                    marginTop: 'auto', background: accent, color: '#000',
-                    border: 'none', padding: '12px 18px', borderRadius: 999,
-                    fontFamily: 'var(--display)', fontWeight: 800, fontSize: 13,
-                    letterSpacing: '0.12em', cursor: 'pointer',
-                  }}>
-                    GET TICKETS →
-                  </button>
-                )}
               </>
             );
           })() : (
