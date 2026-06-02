@@ -128,7 +128,7 @@ function NavA({ section, setSection, accent, theme = 'dark', setTheme }) {
           background: accent, display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontFamily: 'var(--mono)', fontSize: 12, fontWeight: 700, color: '#000',
         }}>●</div>
-        <span className="nav-bar-logo" style={{ fontSize: 16, fontWeight: 800, letterSpacing: '0.1em' }}>NASHA/FM</span>
+        <span className="nav-bar-logo" style={{ fontSize: 16, fontWeight: 800, letterSpacing: '0.1em' }}>NASHA/DJ</span>
         <span className="nav-bar-live" style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--fg-faint)', letterSpacing: '0.15em', marginLeft: 6 }}>● LIVE</span>
       </div>
       <nav style={{ display: 'flex', gap: 4 }}>
@@ -826,7 +826,7 @@ function FooterA({ D, accent }) {
     <div style={{ borderTop: '1px solid var(--border)', marginTop: 40, padding: '20px', fontFamily: 'var(--mono)' }}>
       <div style={{ maxWidth: 1400, margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: 20 }}>
         <div style={{ fontSize: 'clamp(56px, 10vw, 140px)', fontFamily: 'var(--display)', fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 0.85, color: accent }}>
-          NASHA/FM
+          NASHA/DJ
         </div>
         <div style={{ fontSize: 11, color: 'var(--fg-dim)', letterSpacing: '0.1em', lineHeight: 1.7 }}>
           © 2026 NASHA · AMSTERDAM · SANTIAGO<br />
