@@ -587,16 +587,23 @@ function AboutA({ D, accent }) {
             <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--fg-faint)', letterSpacing: '0.1em' }}>v.2026.01 · EPK</div>
           </div>
           <div style={{ display: 'flex', gap: 8 }}>
-            <button style={{
-              background: accent, color: '#000', border: 'none', padding: '8px 14px',
-              borderRadius: 999, fontFamily: 'var(--mono)', fontSize: 10, fontWeight: 700,
-              letterSpacing: '0.15em', cursor: 'pointer',
-            }}>↓ DOWNLOAD EPK.PDF</button>
-            <button style={{
-              background: 'transparent', color: 'var(--fg)', border: '1px solid var(--border)',
-              padding: '8px 14px', borderRadius: 999, fontFamily: 'var(--mono)',
-              fontSize: 10, fontWeight: 700, letterSpacing: '0.15em', cursor: 'pointer',
-            }}>↓ PHOTO PACK.ZIP</button>
+            {D.epkPdf && (
+              <a href={D.epkPdf} download style={{
+                background: accent, color: '#000', textDecoration: 'none',
+                padding: '8px 14px', borderRadius: 999, fontFamily: 'var(--mono)',
+                fontSize: 10, fontWeight: 700, letterSpacing: '0.15em',
+                display: 'inline-flex', alignItems: 'center',
+              }}>↓ DOWNLOAD EPK.PDF</a>
+            )}
+            {D.photoPackZip && (
+              <a href={D.photoPackZip} download style={{
+                background: 'transparent', color: 'var(--fg)', border: '1px solid var(--border)',
+                textDecoration: 'none',
+                padding: '8px 14px', borderRadius: 999, fontFamily: 'var(--mono)',
+                fontSize: 10, fontWeight: 700, letterSpacing: '0.15em',
+                display: 'inline-flex', alignItems: 'center',
+              }}>↓ PHOTO PACK.ZIP</a>
+            )}
           </div>
         </div>
 
