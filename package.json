@@ -6,17 +6,20 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
-    "cms": "concurrently -n cms,vite -c yellow,cyan \"decap-server\" \"vite\""
+    "preview": "npm run build && wrangler dev",
+    "cms": "concurrently -n cms,vite -c yellow,cyan \"decap-server\" \"vite\"",
+    "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.39.2",
     "@vitejs/plugin-react": "^4.7.0",
     "concurrently": "^9.1.2",
     "decap-server": "^3.1.4",
-    "vite": "^6.4.2"
+    "vite": "^6.4.2",
+    "wrangler": "^4.97.0"
   }
 }
