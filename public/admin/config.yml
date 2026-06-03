@@ -47,7 +47,7 @@ collections:
           - { name: portrait, label: Portrait — About page (HI-RES), widget: image, required: false }
           - { name: portraitMin, label: Portrait — Home minimal (small card), widget: image, required: false }
           - { name: epkPdf, label: EPK — press kit PDF, widget: file, required: false, hint: 'Single PDF with bio, hi-res photo, rider, contact. The "Download EPK.pdf" button hides if empty.' }
-          - { name: photoPackZip, label: Photo pack — ZIP of hi-res press photos, widget: file, required: false, hint: 'Zip your best press photos on your laptop and upload once. The "Photo Pack.zip" button hides if empty.' }
+          - { name: photoPackUrl, label: Photo pack — external link, widget: string, required: false, hint: 'Paste a public Google Drive / Dropbox folder URL with the hi-res press photos. The "Photo Pack" button hides if empty.' }
 
       - name: tags
         label: Genre tags

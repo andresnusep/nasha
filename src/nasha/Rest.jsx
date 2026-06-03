@@ -595,14 +595,14 @@ function AboutA({ D, accent }) {
                 display: 'inline-flex', alignItems: 'center',
               }}>↓ DOWNLOAD EPK.PDF</a>
             )}
-            {D.photoPackZip && (
-              <a href={D.photoPackZip} download style={{
+            {D.photoPackUrl && (
+              <a href={D.photoPackUrl} target="_blank" rel="noopener noreferrer" style={{
                 background: 'transparent', color: 'var(--fg)', border: '1px solid var(--border)',
                 textDecoration: 'none',
                 padding: '8px 14px', borderRadius: 999, fontFamily: 'var(--mono)',
                 fontSize: 10, fontWeight: 700, letterSpacing: '0.15em',
                 display: 'inline-flex', alignItems: 'center',
-              }}>↓ PHOTO PACK.ZIP</a>
+              }}>↗ PHOTO PACK</a>
             )}
           </div>
         </div>
