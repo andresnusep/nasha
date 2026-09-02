@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BPM Match — Nasha</title>
+<meta name="description" content="Quickly find every tempo that mix-locks with your current BPM.">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/bpm/styles.css">
+</head>
+<body>
+<div id="app" class="screen">
+
+  <header class="topbar">
+    <div class="locks">
+      <span class="label">Locks with</span>
+      <span class="bpm-readout" id="bpmLabel">126.0</span>
+    </div>
+    <div class="pill-group" id="tolGroup" role="group" aria-label="Pitch tolerance"></div>
+  </header>
+
+  <section class="results" id="results" aria-label="Matching tempos"></section>
+
+  <div class="topbar topbar-mode">
+    <span class="label">You are playing</span>
+    <div class="pill-group pill-group-lg" id="modeGroup" role="group" aria-label="Input mode"></div>
+  </div>
+
+  <section id="wheelPanel">
+    <div class="presets" id="presets" aria-label="Preset tempos"></div>
+
+    <div class="wheelzone">
+      <div class="lozenge lozenge-int" aria-hidden="true"></div>
+      <div class="lozenge lozenge-dec" aria-hidden="true"></div>
+      <div class="dot" aria-hidden="true">.</div>
+      <div class="bpmtag" aria-hidden="true">BPM</div>
+      <div class="rollers">
+        <div class="roller" id="rollInt" data-roller="int" tabindex="0" aria-label="Whole BPM"></div>
+        <div class="rollgap"></div>
+        <div class="roller roller-dec" id="rollDec" data-roller="dec" tabindex="0" aria-label="Tenths of BPM"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="typePanel" hidden>
+    <div class="typedrow">
+      <span class="typedval" id="typedVal">126.0</span>
+      <span class="bpmtag-inline">BPM</span>
+    </div>
+    <div class="keypad" id="keypad" aria-label="Numeric keypad"></div>
+    <div class="matchwrap">
+      <button class="matchbtn" id="matchBtn" type="button">Match</button>
+    </div>
+  </section>
+
+</div>
+<script src="/bpm/app.js"></script>
+</body>
+</html>
